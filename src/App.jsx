@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createContext, useState } from "react";
 import SinglePost from "./screens/SinglePost";
-import Users from "./screens/Users";
 import Home from "./screens/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
 // eslint-disable-next-line react-refresh/only-export-components
@@ -16,12 +15,8 @@ function App() {
       element: <Home />,
     },
     {
-      path: "/posts/:postId/:userId",
+      path: "/posts/:postId",
       element: <SinglePost />,
-    },
-    {
-      path: "/users",
-      element: <Users />,
     },
   ]);
 
