@@ -1,13 +1,17 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getSinglePost } from "../api/users";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import Image from "react-bootstrap/Image";
 import Header from "../components/Home/Header";
+import Footer from "../components/Home/Footer";
+import { Modal } from "antd";
 
 function SinglePost() {
   const params = useParams();
@@ -17,6 +21,17 @@ function SinglePost() {
     queryFn: () => getSinglePost(params.postId),
     enabled: !!params.postId,
   });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   if (isLoading) {
     return (
@@ -79,6 +94,71 @@ function SinglePost() {
               />
             </Col>
           </Row>
+
+          <Button type="success" onClick={showModal}>
+            Make Reservation
+          </Button>
+          <Modal
+            title="Make Reservation"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <form>
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">
+                  Name:
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  placeholder="Enter name"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="surname" className="form-label">
+                  Surname:
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="surname"
+                  placeholder="Enter surname"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="date" className="form-label">
+                  Date:
+                </label>
+                <input type="date" className="form-control" id="date" />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="date" className="form-label">
+                  Guests:
+                </label>
+                <input type="number" className="form-control" id="date" />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="date" className="form-label">
+                  Card Number:
+                </label>
+                <input type="number" className="form-control" id="date" />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="date" className="form-label">
+                  Expiry:
+                </label>
+                <input type="date" className="form-control" id="date" />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="date" className="form-label">
+                  CVV:
+                </label>
+                <input type="number" className="form-control" id="date" />
+              </div>
+            </form>
+          </Modal>
           <Row className="mt-5">
             <Col>
               <h3>Videos</h3>
@@ -104,6 +184,7 @@ function SinglePost() {
           </Row>
         </Container>
       </div>
+      <Footer />
     </>
   );
 }
