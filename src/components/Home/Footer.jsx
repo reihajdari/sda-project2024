@@ -1,4 +1,3 @@
-import React from "react";
 import {
   MDBFooter,
   MDBContainer,
@@ -31,7 +30,7 @@ function Footer() {
           <a href="" className="me-4 text-reset">
             <MDBIcon fab icon="linkedin" />
           </a>
-          <a href="" className="me-4 text-reset">
+          <a href="https://github.com/reihajdari" className="me-4 text-reset">
             <MDBIcon fab icon="github" />
           </a>
         </div>
@@ -45,9 +44,7 @@ function Footer() {
                 <MDBIcon icon="gem" className="me-3" />
                 Cinema+
               </h6>
-              <p>
-                Cinema+ Website with latest movies.
-              </p>
+              <p>Cinema+ Website with latest movies.</p>
             </MDBCol>
 
             <MDBCol md="2" lg="2" xl="2" className="mx-auto mb-4">
@@ -110,7 +107,7 @@ function Footer() {
               </p>
               <p>
                 <MDBIcon icon="envelope" className="me-3" />
-            reihajdari03@gmail.com
+                reihajdari03@gmail.com
               </p>
               <p>
                 <MDBIcon icon="phone" className="me-3" /> +355692640063
@@ -124,7 +121,7 @@ function Footer() {
         className="text-center p-4"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
       >
-        © 2024 Copyright: 
+        © 2024 Copyright:
         <a className="text-reset fw-bold" href="">
           REI HAJDARI - All Rights Reserved
         </a>
