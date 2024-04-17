@@ -10,7 +10,6 @@ function MovieCard({ postId }) {
     getSinglePost(postId)
       .then((data) => {
         setMovie(data);
-        console.log(data);
       })
       .catch((error) => {
         console.error("Gabim gjatë marrjes së të dhënave:", error);

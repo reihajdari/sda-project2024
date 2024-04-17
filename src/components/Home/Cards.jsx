@@ -19,7 +19,6 @@ function Cards() {
     getPopularMovies()
       .then((data) => {
         setMovies(data.results);
-        console.log(data.results);
       })
       .catch((error) => {
         console.error("Gabim gjatë marrjes së të dhënave:", error);
