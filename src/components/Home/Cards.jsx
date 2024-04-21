@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
@@ -7,14 +7,15 @@ import { getPopularMovies } from "../../api/users";
 import { Link } from "react-router-dom";
 import { StarTwoTone } from "@ant-design/icons";
 import "./cards.css";
+import { SearchContext } from "../../screens/Home.jsx";
 
 function Cards() {
   const [movies, setMovies] = useState([]);
   const [showMoreMap, setShowMoreMap] = useState({});
   const [favorites, setFavorites] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const search = useContext(SearchContext);
 
-  console.log(searchTerm);
+  console.log(search.searchTerm);
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -60,18 +61,12 @@ function Cards() {
   }, [favorites]);
 
   const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+    movie.title.toLowerCase().includes(search.searchTerm.toLowerCase())
   );
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Kërko filmin..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <Row xs={1} md={3} className="g-4">
+    <Row xs={1} md={3} className="g-4">
         {filteredMovies.map((movie) => (
           <Col key={movie.id}>
             <Card className="card">

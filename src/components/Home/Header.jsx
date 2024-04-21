@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -10,15 +10,15 @@ import { Modal } from "antd";
 import { getPopularMovies } from "../../api/users";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { SearchContext } from "../../screens/Home.jsx";
 
 function Header() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const search = useContext(SearchContext);
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 
-  
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/");
@@ -51,12 +51,14 @@ function Header() {
   }, [isModalOpen]);
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    search.setSearchTerm(event.target.value);
   };
 
   const handleSearch = () => {
     const filtered = movies.filter((movie) =>
-      movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+      movie.title
+        .toLowerCase()
+        .includes(search.searchTerm.context.toLowerCase())
     );
     setFilteredMovies(filtered);
   };
@@ -92,7 +94,7 @@ function Header() {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
-                value={searchTerm}
+                value={search.searchTerm}
                 onChange={handleSearchChange}
               />
               <Button variant="outline-success" onClick={handleSearch}>
