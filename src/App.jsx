@@ -4,11 +4,14 @@ import { createContext, useState } from "react";
 import SinglePost from "./screens/SinglePost";
 import Home from "./screens/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
-// eslint-disable-next-line react-refresh/only-export-components
+
+
 export const client = new QueryClient();
 export const ThemeContext = createContext();
 
+
 function App() {
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -19,32 +22,35 @@ function App() {
       element: <SinglePost />,
     },
   ]);
+    const [favorites, setFavorites] = useState([]);
 
   const themeFromLocalStorage = JSON.parse(localStorage.getItem("theme"));
+  
 
   const checkedThemeFromLocalStorage = themeFromLocalStorage
     ? themeFromLocalStorage
     : "light";
 
   const [theme, setTheme] = useState(checkedThemeFromLocalStorage);
+  console.log(theme);
+  
 
-  const defaultTheme = true;
-
+  const defaultTheme = "dark";
   localStorage.setItem("theme", JSON.stringify(defaultTheme));
 
   return (
-    <>
-      <QueryClientProvider client={client}>
-        <ThemeContext.Provider
-          value={{
-            theme,
-            setTheme,
-          }}
-        >
-          <RouterProvider router={router} />
-        </ThemeContext.Provider>
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={client}>
+      <ThemeContext.Provider
+        value={{
+          theme,
+          setTheme,
+          favorites,
+          setFavorites,
+        }}
+      >
+        <RouterProvider router={router} />
+      </ThemeContext.Provider>
+    </QueryClientProvider>
   );
 }
 

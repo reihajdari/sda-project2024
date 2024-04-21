@@ -1,0 +1,17 @@
+.header-info.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.header-info.light {
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+.header-info h1 {
+  font-size: 2rem;
+}
+
+.header-info p {
+  font-size: 1.25rem;
+}

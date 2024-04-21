@@ -6,14 +6,16 @@ import Col from "react-bootstrap/Col";
 import { getPopularMovies } from "../../api/users";
 import { Link } from "react-router-dom";
 import { StarTwoTone } from "@ant-design/icons";
-import "./cards.css";
 import { SearchContext } from "../../screens/Home.jsx";
+import { ThemeContext } from "../../App";
+import "./cards.css";
 
 function Cards() {
   const [movies, setMovies] = useState([]);
   const [showMoreMap, setShowMoreMap] = useState({});
   const [favorites, setFavorites] = useState([]);
   const search = useContext(SearchContext);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -24,34 +26,28 @@ function Cards() {
         setMovies(data.results);
       })
       .catch((error) => {
-        console.error("Gabim gjatë marrjes së të dhënave:", error);
+        console.error("Error fetching popular movies:", error);
       });
   }, []);
 
   const trimDescription = (text, maxLength) => {
-    if (text.length <= maxLength) {
-      return text;
-    }
-    return text.substr(0, maxLength) + "...";
+    return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
   };
 
   const toggleShowMore = (id) => {
-    setShowMoreMap({
-      ...showMoreMap,
-      [id]: !showMoreMap[id],
-    });
+    setShowMoreMap((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   const toggleFavorite = (id) => {
-    const index = favorites.indexOf(id);
-    if (index !== -1) {
-      const updatedFavorites = [...favorites];
-      updatedFavorites.splice(index, 1);
-      setFavorites(updatedFavorites);
-    } else {
-      const updatedFavorites = [...favorites, id];
-      setFavorites(updatedFavorites);
-    }
+    setFavorites((prevFavorites) => {
+      if (prevFavorites.includes(id)) {
+        return prevFavorites.filter((fav) => fav !== id);
+      }
+      return [...prevFavorites, id];
+    });
   };
 
   useEffect(() => {
@@ -62,12 +58,17 @@ function Cards() {
     movie.title.toLowerCase().includes(search.searchTerm.toLowerCase())
   );
 
+  const cardStyle =
+    theme === "dark"
+      ? { backgroundColor: "#333", color: "#fff" }
+      : { backgroundColor: "#fff", color: "#000" };
+
   return (
     <div>
       <Row xs={1} md={3} className="g-4">
         {filteredMovies.map((movie) => (
           <Col key={movie.id}>
-            <Card className="card">
+            <Card style={cardStyle} className="card">
               <Card.Img
                 variant="top"
                 src={
@@ -76,36 +77,38 @@ function Cards() {
                     : "https://via.placeholder.com/150"
                 }
               />
-              <Card.Body>
+              <Card.Body style={cardStyle}>
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>
                   {showMoreMap[movie.id]
                     ? movie.overview
                     : trimDescription(movie.overview, 50)}
                 </Card.Text>
-                {!showMoreMap[movie.id] && (
-                  <Button
-                    variant="link"
-                    onClick={() => toggleShowMore(movie.id)}
-                  >
-                    Shiko më shumë
-                  </Button>
-                )}
-                {showMoreMap[movie.id] && (
-                  <Button
-                    variant="link"
-                    onClick={() => toggleShowMore(movie.id)}
-                  >
-                    Shiko më pak
-                  </Button>
-                )}
-                <Card.Text>{movie.release_date}</Card.Text>
-                <Card.Text>Average: {movie.vote_average}</Card.Text>
+                <Button
+                  variant="link"
+                  onClick={() => toggleShowMore(movie.id)}
+                  style={{ color: theme === "dark" ? "#00f" : "#000" }}
+                >
+                  {showMoreMap[movie.id] ? "Shiko më pak" : "Shiko më shumë"}
+                </Button>
+                <Card.Text>Release Date: {movie.release_date}</Card.Text>
+                <Card.Text>Vote Average: {movie.vote_average}</Card.Text>
                 <Link to={`/posts/${movie.id}`}>
-                  <Button variant="primary">Informacion i Detajuar</Button>
+                  <Button
+                    variant="primary"
+                    style={{
+                      backgroundColor: theme === "dark" ? "#444" : "#007bff",
+                    }}
+                  >
+                    Informacion i Detajuar
+                  </Button>
                 </Link>
               </Card.Body>
-              <Card.Footer>
+              <Card.Footer
+                style={{
+                  borderTop: `1px solid ${theme === "dark" ? "#555" : "#ddd"}`,
+                }}
+              >
                 <StarTwoTone
                   onClick={() => toggleFavorite(movie.id)}
                   twoToneColor={

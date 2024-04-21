@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getSinglePost } from "../api/users";
@@ -9,13 +9,23 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import Image from "react-bootstrap/Image";
-
+import { ThemeContext } from "../App";
 import Footer from "../components/Home/Footer";
 import { Modal } from "antd";
 import HeaderSinglePost from "../components/SinglePost/HeaderSinglePost";
 
 function SinglePost() {
+  const { theme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    localStorage.setItem("theme", JSON.stringify(theme));
+  }, [theme]);
+
   const params = useParams();
+  const style =
+    theme === "dark"
+      ? { backgroundColor: "black", color: "white" }
+      : { backgroundColor: "white", color: "black" };
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["user", params.postId],
@@ -61,8 +71,8 @@ function SinglePost() {
   const videos = data?.videos?.results || [];
 
   return (
-    <>
-      <HeaderSinglePost/>
+    <section style={style}>
+      <HeaderSinglePost />
       <div className="bg-light" style={{ minHeight: "100vh" }}>
         <Container className="mt-5">
           <Row className="justify-content-center">
@@ -184,7 +194,7 @@ function SinglePost() {
         </Container>
       </div>
       <Footer />
-    </>
+    </section>
   );
 }
 

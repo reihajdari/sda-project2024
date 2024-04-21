@@ -1,27 +1,31 @@
 import { useState, useEffect, useContext } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import { Link, useNavigate } from "react-router-dom";
+import { Navbar, Container, Form, Nav, Button } from "react-bootstrap";
+import { Modal } from "antd";
 import CinemaLogo from "../../assets/cinema-icon.png";
 import HeaderInfo from "./HeaderInfo";
-import { Modal } from "antd";
 import { getPopularMovies } from "../../api/users";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { SearchContext } from "../../screens/Home.jsx";
+import { SearchContext } from "../../screens/Home";
+import { ThemeContext } from "../../App";
+import "./Header.css";
 
 function Header() {
   const search = useContext(SearchContext);
+  const theme = useContext(ThemeContext);
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/");
+
+  useEffect(() => {
+    localStorage.setItem("theme", JSON.stringify(theme.theme));
+  }, [theme.theme]);
+
+  const handleThemeToggle = () => {
+    const newTheme = theme.theme === "dark" ? "light" : "dark";
+    theme.setTheme(newTheme);
   };
 
   useEffect(() => {
@@ -31,7 +35,7 @@ function Header() {
         setFilteredMovies(data.results);
       })
       .catch((error) => {
-        console.error("Gabim gjatë marrjes së të dhënave:", error);
+        console.error("Error fetching popular movies:", error);
       });
 
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -45,18 +49,11 @@ function Header() {
     setFilteredMovies(favorites);
   }, [movies, favoriteMovieIds]);
 
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavoriteMovieIds(storedFavorites);
-  }, [isModalOpen]);
-
   const handleSearchChange = (event) => {
-    search.setSearchTerm(event.target.value);
-  };
-
-  const handleSearch = () => {
+    const searchTerm = event.target.value.toLowerCase();
+    search.setSearchTerm(searchTerm);
     const filtered = movies.filter((movie) =>
-      movie.title.toLowerCase().includes(search.searchTerm.toLowerCase())
+      movie.title.toLowerCase().includes(searchTerm)
     );
     setFilteredMovies(filtered);
   };
@@ -65,63 +62,68 @@ function Header() {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
+  const handleModalClose = () => {
     setIsModalOpen(false);
   };
 
   return (
-    <div>
-      <Navbar expand="lg" className="bg-body-tertiary">
-        <Container fluid className="d-flex flex-row mb-3">
-          <div className="d-flex justify-content-left align-items-center p-2">
+    <div className={`header-wrapper ${theme.theme}`}>
+      <Navbar expand="lg" className={`navbar ${theme.theme}`}>
+        <Container fluid>
+          <Navbar.Brand
+            className={`theme-toggle-button ${theme.theme}`}
+            onClick={() => navigate("/")}
+          >
             <img
               src={CinemaLogo}
-              style={{ maxHeight: "50px" }}
               alt="Icon Image"
+              style={{ maxHeight: "50px" }}
+              className="cinema-logo"
             />
-            <Navbar.Brand href="">Cinema +</Navbar.Brand>
-          </div>
-          <div className="d-flex justify-content-center align-items-center  p-2">
-            <Form className="d-flex justify-content-center">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-                value={search.searchTerm}
-                onChange={handleSearchChange}
-              />
-              <Button variant="outline-success" onClick={handleSearch}>
-                Search
-              </Button>
-            </Form>
-          </div>
-          <div className="d-flex justify-content-right align-items-center p-2">
-            <Navbar.Toggle aria-controls="navbarScroll" />
-            <Navbar.Collapse
-              id="navbarScroll"
-              className="justify-content-between d-flex flex-row mb-2"
+            Cinema +
+          </Navbar.Brand>
+          <Form className={`d-flex ${theme.theme}`}>
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              value={search.searchTerm}
+              onChange={handleSearchChange}
+            />
+          </Form>
+          <Nav className="ms-auto">
+            <Nav.Link
+              className={`theme-toggle-button ${theme.theme}`}
+              as={Link}
+              to="/"
+              onClick={() => navigate("/")}
             >
-              <Nav.Link className="p-2" href="#home" onClick={handleClick}>
-                Home
-              </Nav.Link>
-              <Nav.Link className="p-2" href="#home" onClick={showModal}>
-                My Favorites
-              </Nav.Link>
-            </Navbar.Collapse>
-          </div>
+              Home
+            </Nav.Link>
+            <Nav.Link
+              onClick={showModal}
+              className={`theme-toggle-button ${theme.theme}`}
+            >
+              My Favorites
+            </Nav.Link>
+            <Button
+              onClick={handleThemeToggle}
+              className={`theme-toggle-button ${theme.theme}`}
+            >
+              {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
+            </Button>
+          </Nav>
         </Container>
       </Navbar>
+
       <HeaderInfo movies={filteredMovies} />
+
       <Modal
-        title="Favorites Movies"
+        title="Favorite Movies"
         open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={handleModalClose}
+        onCancel={handleModalClose}
+        className={`modal ${theme.theme}`}
       >
         <ul>
           {filteredMovies.map((movie) => (
