@@ -58,7 +58,6 @@ function SinglePost() {
     );
   }
   const videos = data?.videos?.results || [];
-  console.log(data);
 
   return (
     <>
@@ -165,18 +164,16 @@ function SinglePost() {
               <h3>Videos</h3>
               {videos.length > 0 ? (
                 <div>
-                  
-                    <div key={videos[0].key}>
-                      <iframe
-                        width="560"
-                        height="315"
-                        src={`https://www.youtube.com/embed/${videos[0].key}`}
-                        title={videos[0].name}
-                        allowFullScreen
-                      ></iframe>
-                      <p>{videos[0].name}</p>
-                    </div>
-                
+                  <div key={videos[0].key}>
+                    <iframe
+                      width="560"
+                      height="315"
+                      src={`https://www.youtube.com/embed/${videos[0].key}`}
+                      title={videos[0].name}
+                      allowFullScreen
+                    ></iframe>
+                    <p>{videos[0].name}</p>
+                  </div>
                 </div>
               ) : (
                 <p>No videos available</p>
