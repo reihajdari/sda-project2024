@@ -28,7 +28,7 @@ function App() {
 
   const [theme, setTheme] = useState(checkedThemeFromLocalStorage);
 
-  const defaultTheme = "dark";
+  const defaultTheme = true;
 
   localStorage.setItem("theme", JSON.stringify(defaultTheme));
 

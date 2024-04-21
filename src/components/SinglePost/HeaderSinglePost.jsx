@@ -1,19 +1,15 @@
-import { useState, useEffect, useContext } from "react";
-import Button from "react-bootstrap/Button";
+import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import CinemaLogo from "../../assets/cinema-icon.png";
-import HeaderInfo from "./HeaderInfo";
+import HeaderInfo from "../Home/HeaderInfo"
 import { Modal } from "antd";
 import { getPopularMovies } from "../../api/users";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { SearchContext } from "../../screens/Home.jsx";
 
-function Header() {
-  const search = useContext(SearchContext);
+function HeaderSinglePost() {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,16 +46,9 @@ function Header() {
     setFavoriteMovieIds(storedFavorites);
   }, [isModalOpen]);
 
-  const handleSearchChange = (event) => {
-    search.setSearchTerm(event.target.value);
-  };
+  
 
-  const handleSearch = () => {
-    const filtered = movies.filter((movie) =>
-      movie.title.toLowerCase().includes(search.searchTerm.toLowerCase())
-    );
-    setFilteredMovies(filtered);
-  };
+  
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -86,19 +75,7 @@ function Header() {
             <Navbar.Brand href="">Cinema +</Navbar.Brand>
           </div>
           <div className="d-flex justify-content-center align-items-center  p-2">
-            <Form className="d-flex justify-content-center">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-                value={search.searchTerm}
-                onChange={handleSearchChange}
-              />
-              <Button variant="outline-success" onClick={handleSearch}>
-                Search
-              </Button>
-            </Form>
+           
           </div>
           <div className="d-flex justify-content-right align-items-center p-2">
             <Navbar.Toggle aria-controls="navbarScroll" />
@@ -135,4 +112,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default HeaderSinglePost;

@@ -9,9 +9,10 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import Image from "react-bootstrap/Image";
-import Header from "../components/Home/Header";
+
 import Footer from "../components/Home/Footer";
 import { Modal } from "antd";
+import HeaderSinglePost from "../components/SinglePost/HeaderSinglePost";
 
 function SinglePost() {
   const params = useParams();
@@ -61,7 +62,7 @@ function SinglePost() {
 
   return (
     <>
-      <Header />
+      <HeaderSinglePost/>
       <div className="bg-light" style={{ minHeight: "100vh" }}>
         <Container className="mt-5">
           <Row className="justify-content-center">

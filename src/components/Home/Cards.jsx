@@ -15,8 +15,6 @@ function Cards() {
   const [favorites, setFavorites] = useState([]);
   const search = useContext(SearchContext);
 
-  console.log(search.searchTerm);
-
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
@@ -66,7 +64,7 @@ function Cards() {
 
   return (
     <div>
-    <Row xs={1} md={3} className="g-4">
+      <Row xs={1} md={3} className="g-4">
         {filteredMovies.map((movie) => (
           <Col key={movie.id}>
             <Card className="card">
