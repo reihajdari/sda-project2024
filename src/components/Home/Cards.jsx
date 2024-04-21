@@ -6,11 +6,15 @@ import Col from "react-bootstrap/Col";
 import { getPopularMovies } from "../../api/users";
 import { Link } from "react-router-dom";
 import { StarTwoTone } from "@ant-design/icons";
+import "./cards.css";
 
 function Cards() {
   const [movies, setMovies] = useState([]);
   const [showMoreMap, setShowMoreMap] = useState({});
   const [favorites, setFavorites] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  console.log(searchTerm);
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -55,12 +59,22 @@ function Cards() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
+      <input
+        type="text"
+        placeholder="Kërko filmin..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <Row xs={1} md={3} className="g-4">
-        {movies.map((movie) => (
+        {filteredMovies.map((movie) => (
           <Col key={movie.id}>
-            <Card style={{ width: "18rem" }}>
+            <Card className="card">
               <Card.Img
                 variant="top"
                 src={
@@ -97,6 +111,8 @@ function Cards() {
                 <Link to={`/posts/${movie.id}`}>
                   <Button variant="primary">Informacion i Detajuar</Button>
                 </Link>
+              </Card.Body>
+              <Card.Footer>
                 <StarTwoTone
                   onClick={() => toggleFavorite(movie.id)}
                   twoToneColor={
@@ -104,7 +120,7 @@ function Cards() {
                   }
                   style={{ fontSize: "24px", cursor: "pointer" }}
                 />
-              </Card.Body>
+              </Card.Footer>
             </Card>
           </Col>
         ))}

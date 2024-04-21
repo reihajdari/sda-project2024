@@ -24,7 +24,7 @@ export async function getSinglePost(filmId) {
   const res = await axios.get(
     "https://api.themoviedb.org/3/movie/" +
       filmId +
-      "?api_key=66427f1e7115fee56a85a9b4454dcdb5"
+      "?api_key=66427f1e7115fee56a85a9b4454dcdb5&append_to_response=videos"
   );
   return res.data;
 }

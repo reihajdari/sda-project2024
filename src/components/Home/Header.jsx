@@ -18,6 +18,7 @@ function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 
+  
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/");
