@@ -43,11 +43,16 @@ function Header() {
   }, []);
 
   useEffect(() => {
-    const favorites = movies.filter((movie) =>
-      favoriteMovieIds.includes(movie.id)
-    );
-    setFilteredMovies(favorites);
-  }, [movies, favoriteMovieIds]);
+    if (isModalOpen) {
+      const storedFavorites =
+        JSON.parse(localStorage.getItem("favorites")) || [];
+      setFavoriteMovieIds(storedFavorites);
+    }
+  }, [isModalOpen]);
+
+  const filteredFavorites = movies.filter((movie) =>
+    favoriteMovieIds.includes(movie.id)
+  );
 
   const handleSearchChange = (event) => {
     const searchTerm = event.target.value.toLowerCase();
@@ -123,10 +128,10 @@ function Header() {
         open={isModalOpen}
         onOk={handleModalClose}
         onCancel={handleModalClose}
-        className={`modal ${theme.theme}`}
+        className={`${theme.theme}`}
       >
         <ul>
-          {filteredMovies.map((movie) => (
+          {filteredFavorites.map((movie) => (
             <li key={movie.id}>
               <Link to={`/posts/${movie.id}`}>{movie.title}</Link>
             </li>
