@@ -5,7 +5,9 @@ import { Modal } from "antd";
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
 
+
 function Registration() {
+ 
   const [formData, setFormData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -24,8 +26,9 @@ function Registration() {
     setIsModalOpen(true);
   };
 
+
   return (
-    <div>
+    <div >
       <Nav.Link className="p-2" onClick={showModal}>
         Don't have an account? Register here!
       </Nav.Link>

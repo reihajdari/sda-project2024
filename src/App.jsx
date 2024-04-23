@@ -42,6 +42,7 @@ function App() {
 
   const defaultTheme = "dark";
   localStorage.setItem("theme", JSON.stringify(defaultTheme));
+  
 
   return (
     <QueryClientProvider client={client}>
