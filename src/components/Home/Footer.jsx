@@ -41,22 +41,38 @@ function Footer() {
         </div>
 
         <div>
-          <a href="#!" className="me-4 text-reset">
+          <a
+            href="https://www.facebook.com/rei.hajdari.5"
+            target="blank"
+            className="me-4 text-reset"
+          >
             <MDBIcon fab icon="facebook-f" style={linkStyle} />
           </a>
-          <a href="#!" className="me-4 text-reset">
+          <a href="#!" target="blank" className="me-4 text-reset">
             <MDBIcon fab icon="twitter" style={linkStyle} />
           </a>
-          <a href="#!" className="me-4 text-reset">
+          <a href="#!" target="blank" className="me-4 text-reset">
             <MDBIcon fab icon="google" style={linkStyle} />
           </a>
-          <a href="#!" className="me-4 text-reset">
+          <a
+            href="https://www.instagram.com/rei__hajdari/"
+            target="blank"
+            className="me-4 text-reset"
+          >
             <MDBIcon fab icon="instagram" style={linkStyle} />
           </a>
-          <a href="#!" className="me-4 text-reset">
+          <a
+            href="https://www.linkedin.com/in/rei-hajdari-74a9bab8/"
+            target="blank"
+            className="me-4 text-reset"
+          >
             <MDBIcon fab icon="linkedin" style={linkStyle} />
           </a>
-          <a href="#!" className="me-4 text-reset">
+          <a
+            href="https://github.com/reihajdari"
+            target="blank"
+            className="me-4 text-reset"
+          >
             <MDBIcon fab icon="github" style={linkStyle} />
           </a>
         </div>
@@ -76,22 +92,42 @@ function Footer() {
             <MDBCol md="2" lg="2" xl="2" className="mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Products</h6>
               <p>
-                <a href="#!" className="text-reset" style={linkStyle}>
+                <a
+                  href="https://angular.io/"
+                  target="blank"
+                  className="text-reset"
+                  style={linkStyle}
+                >
                   Angular
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset" style={linkStyle}>
+                <a
+                  href="https://react.dev/"
+                  target="blank"
+                  className="text-reset"
+                  style={linkStyle}
+                >
                   React
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset" style={linkStyle}>
+                <a
+                  href="https://vuejs.org/"
+                  target="blank"
+                  className="text-reset"
+                  style={linkStyle}
+                >
                   Vue
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset" style={linkStyle}>
+                <a
+                  href="https://laravel.com/"
+                  target="blank"
+                  className="text-reset"
+                  style={linkStyle}
+                >
                   Laravel
                 </a>
               </p>
@@ -100,22 +136,42 @@ function Footer() {
             <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Useful Links</h6>
               <p>
-                <a href="#!" className="text-reset" style={linkStyle}>
+                <a
+                  href="#!"
+                  target="blank"
+                  className="text-reset"
+                  style={linkStyle}
+                >
                   Pricing
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset" style={linkStyle}>
+                <a
+                  href="#!"
+                  target="blank"
+                  className="text-reset"
+                  style={linkStyle}
+                >
                   Settings
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset" style={linkStyle}>
+                <a
+                  href="#!"
+                  target="blank"
+                  className="text-reset"
+                  style={linkStyle}
+                >
                   Orders
                 </a>
               </p>
               <p>
-                <a href="#!" className="text-reset" style={linkStyle}>
+                <a
+                  href="#!"
+                  target="blank"
+                  className="text-reset"
+                  style={linkStyle}
+                >
                   Help
                 </a>
               </p>
