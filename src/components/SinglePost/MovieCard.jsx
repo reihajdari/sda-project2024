@@ -1,10 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getSinglePost } from "../../api/users";
 import CardComponent from "react-bootstrap/Card";
+import { ThemeContext } from "../../App";
 
-
+// eslint-disable-next-line react/prop-types
 function MovieCard({ postId }) {
   const [movie, setMovie] = useState(null);
+   const { theme } = useContext(ThemeContext);
+
+   useEffect(() => {
+     localStorage.setItem("theme", JSON.stringify(theme));
+   }, [theme]);
+
+   const cardStyle =
+     theme === "dark"
+       ? { backgroundColor: "#333", color: "#fff" }
+       : { backgroundColor: "#f8f9fa", color: "#000" };
+
 
   useEffect(() => {
     getSinglePost(postId)
@@ -12,14 +24,14 @@ function MovieCard({ postId }) {
         setMovie(data);
       })
       .catch((error) => {
-        console.error("Gabim gjatë marrjes së të dhënave:", error);
+        console.error("Error fetching popular movies:", error);
       });
   }, [postId]);
 
   return (
-    <div>
+    <div style={cardStyle}>
       {movie && (
-        <CardComponent style={{ width: "18rem" }}>
+        <CardComponent style={cardStyle}>
           <CardComponent.Body>
             <CardComponent.Title>{movie.title}</CardComponent.Title>
             <CardComponent.Text>{movie.overview}</CardComponent.Text>
@@ -27,7 +39,6 @@ function MovieCard({ postId }) {
             <CardComponent.Text>
               Average: {movie.vote_average}
             </CardComponent.Text>
-            
           </CardComponent.Body>
         </CardComponent>
       )}

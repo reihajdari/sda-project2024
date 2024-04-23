@@ -60,7 +60,7 @@ function Login() {
 
       {formData && (
         <div>
-          <h4>Submitted Data:</h4>
+          <h4>Login Data:</h4>
           <p>Email: {formData.username}</p>
           <p>Password: {formData.password}</p>
         </div>

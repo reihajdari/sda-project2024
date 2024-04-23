@@ -17,6 +17,23 @@ function Cards() {
   const search = useContext(SearchContext);
   const { theme } = useContext(ThemeContext);
 
+  const baseStyle = {
+    transition: "all 0.3s",
+  };
+  const darkStyle = {
+    backgroundColor: "#333",
+    color: "#fff",
+  };
+  const lightStyle = {
+    backgroundColor: "#f8f9fa",
+    color: "#000",
+  };
+
+  const currentStyle =
+    theme === "dark"
+      ? { ...baseStyle, ...darkStyle }
+      : { ...baseStyle, ...lightStyle };
+
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
@@ -58,17 +75,12 @@ function Cards() {
     movie.title.toLowerCase().includes(search.searchTerm.toLowerCase())
   );
 
-  const cardStyle =
-    theme === "dark"
-      ? { backgroundColor: "#333", color: "#fff" }
-      : { backgroundColor: "#fff", color: "#000" };
-
   return (
-    <div>
+    <div style={currentStyle}>
       <Row xs={1} md={3} className="g-4">
         {filteredMovies.map((movie) => (
           <Col key={movie.id}>
-            <Card style={cardStyle} className="card">
+            <Card style={currentStyle} className="card">
               <Card.Img
                 variant="top"
                 src={
@@ -77,7 +89,7 @@ function Cards() {
                     : "https://via.placeholder.com/150"
                 }
               />
-              <Card.Body style={cardStyle}>
+              <Card.Body style={currentStyle}>
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>
                   {showMoreMap[movie.id]
@@ -89,7 +101,7 @@ function Cards() {
                   onClick={() => toggleShowMore(movie.id)}
                   style={{ color: theme === "dark" ? "#00f" : "#000" }}
                 >
-                  {showMoreMap[movie.id] ? "Shiko më pak" : "Shiko më shumë"}
+                  {showMoreMap[movie.id] ? "Less" : "More"}
                 </Button>
                 <Card.Text>Release Date: {movie.release_date}</Card.Text>
                 <Card.Text>Vote Average: {movie.vote_average}</Card.Text>
@@ -100,7 +112,7 @@ function Cards() {
                       backgroundColor: theme === "dark" ? "#444" : "#007bff",
                     }}
                   >
-                    Informacion i Detajuar
+                    See Details
                   </Button>
                 </Link>
               </Card.Body>

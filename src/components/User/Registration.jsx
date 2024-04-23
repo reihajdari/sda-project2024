@@ -113,7 +113,7 @@ function Registration() {
 
       {formData && (
         <div>
-          <h4>Submitted Data:</h4>
+          <h4>Register Data:</h4>
           <p>Name: {formData.name}</p>
           <p>Surname: {formData.surname}</p>
           <p>Email: {formData.username}</p>

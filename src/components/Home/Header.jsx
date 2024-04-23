@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Navbar, Container, Form, Nav} from "react-bootstrap";
+import { Navbar, Container, Form, Nav } from "react-bootstrap";
 import { Modal } from "antd";
 import CinemaLogo from "../../assets/cinema-icon.png";
 import HeaderInfo from "./HeaderInfo";
@@ -136,7 +136,6 @@ function Header() {
         open={isModalOpen}
         onOk={handleModalClose}
         onCancel={handleModalClose}
-        className={`${theme.theme}`}
       >
         <ul>
           {filteredFavorites.map((movie) => (
