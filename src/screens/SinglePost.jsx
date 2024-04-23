@@ -111,6 +111,7 @@ function SinglePost() {
             <p>
               <strong>Status:</strong> {data?.status}
             </p>
+            <Button onClick={showModal}>Make Reservation</Button>
           </Col>
           <Col lg="4">
             <Image
@@ -120,8 +121,6 @@ function SinglePost() {
             />
           </Col>
         </Row>
-        <Button onClick={showModal}>Make Reservation</Button>
-        <br />
         <Modal
           title="Make Reservation"
           open={isModalOpen}
