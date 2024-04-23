@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Navbar, Container, Form, Nav, Button } from "react-bootstrap";
+import { Navbar, Container, Form, Nav} from "react-bootstrap";
 import { Modal } from "antd";
 import CinemaLogo from "../../assets/cinema-icon.png";
 import HeaderInfo from "./HeaderInfo";
@@ -43,11 +43,16 @@ function Header() {
   }, []);
 
   useEffect(() => {
-    const favorites = movies.filter((movie) =>
-      favoriteMovieIds.includes(movie.id)
-    );
-    setFilteredMovies(favorites);
-  }, [movies, favoriteMovieIds]);
+    if (isModalOpen) {
+      const storedFavorites =
+        JSON.parse(localStorage.getItem("favorites")) || [];
+      setFavoriteMovieIds(storedFavorites);
+    }
+  }, [isModalOpen]);
+
+  const filteredFavorites = movies.filter((movie) =>
+    favoriteMovieIds.includes(movie.id)
+  );
 
   const handleSearchChange = (event) => {
     const searchTerm = event.target.value.toLowerCase();
@@ -106,12 +111,20 @@ function Header() {
             >
               My Favorites
             </Nav.Link>
-            <Button
+            <Nav.Link
               onClick={handleThemeToggle}
               className={`theme-toggle-button ${theme.theme}`}
             >
               {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </Button>
+            </Nav.Link>
+            <Nav.Link
+              className={`theme-toggle-button ${theme.theme}`}
+              as={Link}
+              to="/user"
+              onClick={() => navigate("/")}
+            >
+              Login/Register
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -123,10 +136,10 @@ function Header() {
         open={isModalOpen}
         onOk={handleModalClose}
         onCancel={handleModalClose}
-        className={`modal ${theme.theme}`}
+        className={`${theme.theme}`}
       >
         <ul>
-          {filteredMovies.map((movie) => (
+          {filteredFavorites.map((movie) => (
             <li key={movie.id}>
               <Link to={`/posts/${movie.id}`}>{movie.title}</Link>
             </li>

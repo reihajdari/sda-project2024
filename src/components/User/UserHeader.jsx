@@ -3,13 +3,12 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import CinemaLogo from "../../assets/cinema-icon.png";
-import HeaderInfo from "../Home/HeaderInfo";
 import { Modal } from "antd";
 import { getPopularMovies } from "../../api/users";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-function HeaderSinglePost() {
+function UserHeader() {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -87,7 +86,6 @@ function HeaderSinglePost() {
           </div>
         </Container>
       </Navbar>
-      <HeaderInfo movies={filteredMovies} />
       <Modal
         title="Favorites Movies"
         open={isModalOpen}
@@ -106,4 +104,4 @@ function HeaderSinglePost() {
   );
 }
 
-export default HeaderSinglePost;
+export default UserHeader;

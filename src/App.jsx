@@ -4,6 +4,7 @@ import { createContext, useState } from "react";
 import SinglePost from "./screens/SinglePost";
 import Home from "./screens/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
+import UserScreen from "./screens/UserScreen";
 
 
 export const client = new QueryClient();
@@ -21,6 +22,10 @@ function App() {
       path: "/posts/:postId",
       element: <SinglePost />,
     },
+    {
+      path: "/user",
+      element: <UserScreen />,
+    },
   ]);
     const [favorites, setFavorites] = useState([]);
 
@@ -32,7 +37,7 @@ function App() {
     : "light";
 
   const [theme, setTheme] = useState(checkedThemeFromLocalStorage);
-  console.log(theme);
+
   
 
   const defaultTheme = "dark";
