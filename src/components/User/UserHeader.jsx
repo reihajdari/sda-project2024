@@ -1,16 +1,13 @@
 import { useState, useEffect, useContext } from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import CinemaLogo from "../../assets/cinema-icon.png";
+import { Container, Navbar, Nav } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
+import CinemaLogo from "../../assets/cinema-icon.png";
 import { getPopularMovies } from "../../api/users";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../App";
 import "../Home/Header.css";
 
-function HeaderSinglePost() {
+function UserHeader() {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +32,7 @@ function HeaderSinglePost() {
         setFilteredMovies(data.results);
       })
       .catch((error) => {
-        console.error("Gabim gjatë marrjes së të dhënave:", error);
+        console.error("Error fetching popular movies:", error);
       });
 
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -48,11 +45,6 @@ function HeaderSinglePost() {
     );
     setFilteredMovies(favorites);
   }, [movies, favoriteMovieIds]);
-
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavoriteMovieIds(storedFavorites);
-  }, [isModalOpen]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -68,54 +60,37 @@ function HeaderSinglePost() {
 
   return (
     <div className={`header-wrapper ${theme.theme}`}>
-      <Navbar expand="lg" className={`navbar ${theme.theme}`}>
+      <Navbar expand="lg" className={`navbar ${theme.theme}`} collapseOnSelect>
         <Container fluid>
-          <Navbar.Brand
-            className={`theme-toggle-button ${theme.theme}`}
-            onClick={() => navigate("/")}
-          >
+          <Navbar.Brand onClick={() => navigate("/")}>
             <img
               src={CinemaLogo}
-              alt="Icon Image"
-              style={{ maxHeight: "50px" }}
+              alt="Cinema Logo"
               className="cinema-logo"
+              style={{ maxHeight: "50px" }}
             />
             Cinema +
           </Navbar.Brand>
-          <Nav className="ms-auto">
-            <Nav.Link
-              className={`theme-toggle-button ${theme.theme}`}
-              as={Link}
-              to="/"
-              onClick={() => navigate("/")}
-            >
-              Home
-            </Nav.Link>
-            <Nav.Link
-              onClick={showModal}
-              className={`theme-toggle-button ${theme.theme}`}
-            >
-              My Favorites
-            </Nav.Link>
-            <Nav.Link
-              onClick={handleThemeToggle}
-              className={`theme-toggle-button ${theme.theme}`}
-            >
-              {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </Nav.Link>
-            <Nav.Link
-              className={`theme-toggle-button ${theme.theme}`}
-              as={Link}
-              to="/user"
-              onClick={() => navigate("/")}
-            >
-              Login/Register
-            </Nav.Link>
-          </Nav>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link as={Link} to="/" onClick={() => navigate("/")}>
+                Home
+              </Nav.Link>
+              <Nav.Link onClick={showModal}>My Favorites</Nav.Link>
+              <Nav.Link onClick={handleThemeToggle}>
+                {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
+              </Nav.Link>
+              <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
+                Login/Register
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
+
       <Modal
-        title="Favorites Movies"
+        title="Favorite Movies"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -132,4 +107,4 @@ function HeaderSinglePost() {
   );
 }
 
-export default HeaderSinglePost;
+export default UserHeader;

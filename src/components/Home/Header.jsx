@@ -73,12 +73,9 @@ function Header() {
 
   return (
     <div className={`header-wrapper ${theme.theme}`}>
-      <Navbar expand="lg" className={`navbar ${theme.theme}`}>
+      <Navbar expand="lg" className={`navbar ${theme.theme}`} collapseOnSelect>
         <Container fluid>
-          <Navbar.Brand
-            className={`theme-toggle-button ${theme.theme}`}
-            onClick={() => navigate("/")}
-          >
+          <Navbar.Brand onClick={() => navigate("/")}>
             <img
               src={CinemaLogo}
               alt="Icon Image"
@@ -87,45 +84,34 @@ function Header() {
             />
             Cinema +
           </Navbar.Brand>
-          <Form className={`d-flex ${theme.theme}`}>
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              value={search.searchTerm}
-              onChange={handleSearchChange}
-            />
-          </Form>
-          <Nav className="ms-auto">
-            <Nav.Link
-              className={`theme-toggle-button ${theme.theme}`}
-              as={Link}
-              to="/"
-              onClick={() => navigate("/")}
+          <Navbar.Toggle aria-controls="navbar-nav" />
+          <Navbar.Collapse id="navbar-nav">
+            <Form
+              className={`d-flex ${theme.theme} w-100`}
+              onSubmit={(e) => e.preventDefault()}
             >
-              Home
-            </Nav.Link>
-            <Nav.Link
-              onClick={showModal}
-              className={`theme-toggle-button ${theme.theme}`}
-            >
-              My Favorites
-            </Nav.Link>
-            <Nav.Link
-              onClick={handleThemeToggle}
-              className={`theme-toggle-button ${theme.theme}`}
-            >
-              {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </Nav.Link>
-            <Nav.Link
-              className={`theme-toggle-button ${theme.theme}`}
-              as={Link}
-              to="/user"
-              onClick={() => navigate("/")}
-            >
-              Login/Register
-            </Nav.Link>
-          </Nav>
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+                value={search.searchTerm}
+                onChange={handleSearchChange}
+                className="me-2"
+              />
+            </Form>
+            <Nav className="ms-auto">
+              <Nav.Link as={Link} to="/" onClick={() => navigate("/")}>
+                Home
+              </Nav.Link>
+              <Nav.Link onClick={showModal}>My Favorites</Nav.Link>
+              <Nav.Link onClick={handleThemeToggle}>
+                {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
+              </Nav.Link>
+              <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
+                Login/Register
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
 
