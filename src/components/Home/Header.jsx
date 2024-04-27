@@ -9,6 +9,8 @@ import { SearchContext } from "../../screens/Home";
 import { ThemeContext } from "../../App";
 import "./Header.css";
 
+import { jwtDecode } from "jwt-decode";
+
 function Header() {
   const search = useContext(SearchContext);
   const theme = useContext(ThemeContext);
@@ -16,6 +18,33 @@ function Header() {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
+
+  const idToken = localStorage.getItem("idToken");
+
+  function checkExpire(expireTime) {
+    const nowDate = Math.floor(Date.now() / 1000);
+
+    if (nowDate > expireTime) {
+      console.log("Token has expired.");
+    } else {
+      console.log("Token has not expired.");
+    }
+  }
+
+  if (idToken) {
+    const decodedToken = jwtDecode(idToken);
+    console.log("Token expiry:", decodedToken.exp);
+
+    checkExpire(decodedToken.exp);
+  } else {
+    console.log("No token found in localStorage.");
+  }
+
+  const isTokenExpired = () => {
+    if (!idToken) {
+      return true;
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -107,9 +136,23 @@ function Header() {
               <Nav.Link onClick={handleThemeToggle}>
                 {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Nav.Link>
-              <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
-                Login/Register
-              </Nav.Link>
+              {isTokenExpired() ? (
+                <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
+                  Login/Register
+                </Nav.Link>
+              ) : (
+                <>
+                  <Nav.Link
+                    as={Link}
+                    to="/"
+                    onClick={() => {
+                      localStorage.removeItem("idToken");
+                    }}
+                  >
+                    Logout
+                  </Nav.Link>
+                </>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

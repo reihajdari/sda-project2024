@@ -13,19 +13,33 @@ export async function getAllUsers() {
   return res.data;
 }
 
-export async function createNewUser(data) {
-  const res = await axios.post(
-    "https://jsonplaceholder.typicode.com/users",
-    data
-  );
-  return res.data;
-}
-
 export async function getSinglePost(filmId) {
   const res = await axios.get(
     "https://api.themoviedb.org/3/movie/" +
       filmId +
       `?api_key=${apiKey}&append_to_response=videos`
+  );
+  return res.data;
+}
+
+export async function signUp(data) {
+  const res = await axios.post(
+    "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCTSIpXohgcKPlmZ07Ad-LO1Sj-GvFszUQ",
+    {
+      email: data.username,
+      password: data.password,
+    }
+  );
+  return res.data;
+}
+
+export async function logIn(data) {
+  const res = await axios.post(
+    " https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCTSIpXohgcKPlmZ07Ad-LO1Sj-GvFszUQ",
+    {
+      email: data.username,
+      password: data.password,
+    }
   );
   return res.data;
 }

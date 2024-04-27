@@ -4,13 +4,25 @@ import Nav from "react-bootstrap/Nav";
 import { Modal } from "antd";
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
-
+import { signUp } from "../../api/users";
+import { useMutation } from "@tanstack/react-query";
+import { Alert } from "antd";
 
 function Registration() {
- 
   const [formData, setFormData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState(null);
 
+  const mutation = useMutation({
+    mutationFn: signUp,
+    onSuccess: (data) => {
+      console.log("Registration successful:", data);
+    },
+    onError: (error) => {
+      console.log("Registration error:", error.response.data.error.message);
+      setError(error.response.data.error.message);
+    },
+  });
   const {
     register,
     handleSubmit,
@@ -20,15 +32,35 @@ function Registration() {
   const onSubmit = (data) => {
     setFormData(data);
     setIsModalOpen(false);
+    console.log(data);
+    mutation.mutate(data);
   };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
-
+  console.log(formData);
 
   return (
-    <div >
+    <div>
+      {mutation.isError && (
+        <Alert
+          message={error || "An unknown error occurred."}
+          showIcon
+          type="error"
+          closable
+        ></Alert>
+      )}
+      {mutation.isSuccess && (
+        <Alert
+          message="Registration successful!"
+          showIcon
+          type="success"
+          closable
+          style={{ width: "100%" }}
+        />
+      )}
+
       <Nav.Link className="p-2" onClick={showModal}>
         Don't have an account? Register here!
       </Nav.Link>
@@ -99,6 +131,23 @@ function Registration() {
               </Form.Control.Feedback>
             )}
           </Form.Group>
+          <Form.Group controlId="formConfirmPassword">
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Confirm Passoword"
+              isInvalid={!!errors.password}
+              {...register("confirmedPassword", {
+                required: true,
+                minLength: 8,
+              })}
+            />
+            {errors.password && (
+              <Form.Control.Feedback type="invalid">
+                Password must be at least 8 characters long.
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
 
           <br />
           <Button variant="primary" type="submit">
@@ -113,16 +162,7 @@ function Registration() {
           </p>
         </Form>
       </Modal>
-
-      {formData && (
-        <div>
-          <h4>Register Data:</h4>
-          <p>Name: {formData.name}</p>
-          <p>Surname: {formData.surname}</p>
-          <p>Email: {formData.username}</p>
-          <p>Password: {formData.password}</p>
-        </div>
-      )}
+      {mutation.isLoading && <div>Registering...</div>}
     </div>
   );
 }

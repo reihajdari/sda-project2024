@@ -9,6 +9,7 @@ import { StarTwoTone } from "@ant-design/icons";
 import { SearchContext } from "../../screens/Home.jsx";
 import { ThemeContext } from "../../App";
 import "./cards.css";
+import { jwtDecode } from "jwt-decode";
 
 function Cards() {
   const [movies, setMovies] = useState([]);
@@ -16,6 +17,33 @@ function Cards() {
   const [favorites, setFavorites] = useState([]);
   const search = useContext(SearchContext);
   const { theme } = useContext(ThemeContext);
+
+  const idToken = localStorage.getItem("idToken");
+
+  function checkExpire(expireTime) {
+    const nowDate = Math.floor(Date.now() / 1000);
+
+    if (nowDate > expireTime) {
+      console.log("Token has expired.");
+    } else {
+      console.log("Token has not expired.");
+    }
+  }
+
+  if (idToken) {
+    const decodedToken = jwtDecode(idToken);
+    console.log("Token expiry:", decodedToken.exp);
+
+    checkExpire(decodedToken.exp);
+  } else {
+    console.log("No token found in localStorage.");
+  }
+
+  const isTokenExpired = () => {
+    if (!idToken) {
+      return true;
+    }
+  };
 
   const baseStyle = {
     transition: "all 0.3s",
@@ -106,29 +134,39 @@ function Cards() {
                 <Card.Text>Release Date: {movie.release_date}</Card.Text>
                 <Card.Text>Vote Average: {movie.vote_average}</Card.Text>
                 <Link to={`/posts/${movie.id}`}>
-                  <Button
-                    variant="primary"
-                    style={{
-                      backgroundColor: theme === "dark" ? "#444" : "#007bff",
-                    }}
-                  >
-                    See Details
-                  </Button>
+                  {isTokenExpired() ? (
+                    ""
+                  ) : (
+                    <Button
+                      variant="primary"
+                      style={{
+                        backgroundColor: theme === "dark" ? "#444" : "#007bff",
+                      }}
+                    >
+                      See Details
+                    </Button>
+                  )}
                 </Link>
               </Card.Body>
-              <Card.Footer
-                style={{
-                  borderTop: `1px solid ${theme === "dark" ? "#555" : "#ddd"}`,
-                }}
-              >
-                <StarTwoTone
-                  onClick={() => toggleFavorite(movie.id)}
-                  twoToneColor={
-                    favorites.includes(movie.id) ? "#fadb14" : "#000"
-                  }
-                  style={{ fontSize: "24px", cursor: "pointer" }}
-                />
-              </Card.Footer>
+              {isTokenExpired() ? (
+                ""
+              ) : (
+                <Card.Footer
+                  style={{
+                    borderTop: `1px solid ${
+                      theme === "dark" ? "#555" : "#ddd"
+                    }`,
+                  }}
+                >
+                  <StarTwoTone
+                    onClick={() => toggleFavorite(movie.id)}
+                    twoToneColor={
+                      favorites.includes(movie.id) ? "#fadb14" : "#000"
+                    }
+                    style={{ fontSize: "24px", cursor: "pointer" }}
+                  />
+                </Card.Footer>
+              )}
             </Card>
           </Col>
         ))}
