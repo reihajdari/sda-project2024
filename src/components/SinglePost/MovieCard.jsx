@@ -6,17 +6,16 @@ import { ThemeContext } from "../../App";
 // eslint-disable-next-line react/prop-types
 function MovieCard({ postId }) {
   const [movie, setMovie] = useState(null);
-   const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
-   useEffect(() => {
-     localStorage.setItem("theme", JSON.stringify(theme));
-   }, [theme]);
+  useEffect(() => {
+    localStorage.setItem("theme", JSON.stringify(theme));
+  }, [theme]);
 
-   const cardStyle =
-     theme === "dark"
-       ? { backgroundColor: "#333", color: "#fff" }
-       : { backgroundColor: "#f8f9fa", color: "#000" };
-
+  const cardStyle =
+    theme === "dark"
+      ? { backgroundColor: "#333", color: "#fff" }
+      : { backgroundColor: "#f8f9fa", color: "#000" };
 
   useEffect(() => {
     getSinglePost(postId)
@@ -24,7 +23,7 @@ function MovieCard({ postId }) {
         setMovie(data);
       })
       .catch((error) => {
-        console.error("Error fetching popular movies:", error);
+        console.error("Error fetching movie:", error);
       });
   }, [postId]);
 

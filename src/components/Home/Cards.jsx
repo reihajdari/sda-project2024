@@ -24,15 +24,14 @@ function Cards() {
     const nowDate = Math.floor(Date.now() / 1000);
 
     if (nowDate > expireTime) {
-      console.log("Token has expired.");
+      return true;
     } else {
-      console.log("Token has not expired.");
+      return false;
     }
   }
 
   if (idToken) {
     const decodedToken = jwtDecode(idToken);
-    console.log("Token expiry:", decodedToken.exp);
 
     checkExpire(decodedToken.exp);
   } else {

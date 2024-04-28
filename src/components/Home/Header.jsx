@@ -25,15 +25,14 @@ function Header() {
     const nowDate = Math.floor(Date.now() / 1000);
 
     if (nowDate > expireTime) {
-      console.log("Token has expired.");
+      return true;
     } else {
-      console.log("Token has not expired.");
+      return false;
     }
   }
 
   if (idToken) {
     const decodedToken = jwtDecode(idToken);
-    console.log("Token expiry:", decodedToken.exp);
 
     checkExpire(decodedToken.exp);
   } else {
@@ -133,15 +132,25 @@ function Header() {
                 Home
               </Nav.Link>
               <Nav.Link onClick={showModal}>My Favorites</Nav.Link>
+
               <Nav.Link onClick={handleThemeToggle}>
                 {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Nav.Link>
               {isTokenExpired() ? (
-                <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
-                  Login/Register
-                </Nav.Link>
+                <>
+                  <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
+                    Login/Register
+                  </Nav.Link>
+                </>
               ) : (
                 <>
+                  <Nav.Link
+                    as={Link}
+                    to="/reservations"
+                    onClick={() => navigate("/")}
+                  >
+                    Reservations
+                  </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to="/"

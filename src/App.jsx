@@ -5,11 +5,12 @@ import SinglePost from "./screens/SinglePost";
 import Home from "./screens/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserScreen from "./screens/UserScreen";
+import Reservations from "./screens/Reservations";
+import AdminDashboard from "./screens/AdminDashboard";
 
 
 export const client = new QueryClient();
 export const ThemeContext = createContext();
-
 
 function App() {
 
@@ -26,8 +27,17 @@ function App() {
       path: "/user",
       element: <UserScreen />,
     },
+    {
+      path: "/reservations",
+      element: <Reservations />,
+    },
+    {
+      path: "/admindashboard",
+      element: <AdminDashboard />,
+    },
   ]);
     const [favorites, setFavorites] = useState([]);
+    
 
   const themeFromLocalStorage = JSON.parse(localStorage.getItem("theme"));
   
@@ -46,16 +56,18 @@ function App() {
 
   return (
     <QueryClientProvider client={client}>
-      <ThemeContext.Provider
-        value={{
-          theme,
-          setTheme,
-          favorites,
-          setFavorites,
-        }}
-      >
-        <RouterProvider router={router} />
-      </ThemeContext.Provider>
+     
+        <ThemeContext.Provider
+          value={{
+            theme,
+            setTheme,
+            favorites,
+            setFavorites,
+          
+          }}
+        >
+          <RouterProvider router={router} />
+        </ThemeContext.Provider>
     </QueryClientProvider>
   );
 }

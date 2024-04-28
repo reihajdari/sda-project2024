@@ -15,13 +15,32 @@ import { ThemeContext } from "../App";
 import Footer from "../components/Home/Footer";
 import { Modal } from "antd";
 import HeaderSinglePost from "../components/SinglePost/HeaderSinglePost";
-import { getSinglePost } from "../api/users";
+import { getSinglePost, reservationData } from "../api/users";
 import { useForm } from "react-hook-form";
 
 function SinglePost() {
   const { theme } = useContext(ThemeContext);
-  const [formData, setFormData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [formData, setFormData] = useState(null);
+  const [movie, setMovie] = useState(null);
+
+  const params = useParams();
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["user", params.postId],
+    queryFn: () => getSinglePost(params.postId),
+    enabled: !!params.postId,
+  });
+
+  useEffect(() => {
+    getSinglePost(params.postId)
+      .then((data) => {
+        setMovie(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching movie:", error);
+      });
+  }, [params.postId]);
 
   const baseStyle = {
     transition: "all 0.3s",
@@ -44,13 +63,6 @@ function SinglePost() {
     localStorage.setItem("theme", JSON.stringify(theme));
   }, [theme]);
 
-  const params = useParams();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["user", params.postId],
-    queryFn: () => getSinglePost(params.postId),
-    enabled: !!params.postId,
-  });
-
   const {
     register,
     handleSubmit,
@@ -60,6 +72,7 @@ function SinglePost() {
   const onSubmit = (data) => {
     setFormData(data);
     setIsModalOpen(false);
+    reservationData(data);
   };
 
   const showModal = () => {
@@ -181,7 +194,7 @@ function SinglePost() {
                 {...register("age", { required: true })}
               />
             </Form.Group>
-            <Form.Group controlId="formPassword">
+            <Form.Group controlId="formTickets">
               <Form.Label>Number of tickets</Form.Label>
               <Form.Control
                 type="number"
@@ -189,23 +202,30 @@ function SinglePost() {
                 {...register("tickets", { required: true })}
               />
             </Form.Group>
-
+            <Form.Group controlId="formMovie">
+              <Form.Label>Movie</Form.Label>
+              <Form.Control
+                {...register("movieTitle", { value: movie.title })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formTheatre">
+              <Form.Label>Select Theatre</Form.Label>
+              <Form.Select
+                placeholder="Select Theatre"
+                {...register("theatre", { required: true })}
+              >
+                <option value="Theatre 1">Theatre 1</option>
+                <option value="Theatre 2">Theatre 2</option>
+                <option value="Theatre 3">Theatre 3</option>
+              </Form.Select>
+            </Form.Group>
             <br />
+
             <Button variant="primary" type="submit">
               Submit
             </Button>
           </Form>
         </Modal>
-        {formData && (
-          <div>
-            <h4>Submitted Data:</h4>
-            <p>Name: {formData.name}</p>
-            <p>Surname: {formData.surname}</p>
-            <p>Email: {formData.username}</p>
-            <p>Age: {formData.age}</p>
-            <p>Nr.Tickets: {formData.tickets}</p>
-          </div>
-        )}
 
         {videos.length > 0 ? (
           <div>

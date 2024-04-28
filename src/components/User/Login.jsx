@@ -6,14 +6,18 @@ import { logIn } from "../../api/users";
 import { Alert } from "antd";
 import Registration from "./Registration";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 function Login() {
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
 
   const mutation = useMutation({
     mutationFn: logIn,
     onSuccess: (data) => {
-      console.log("Login successful");
       localStorage.setItem("idToken", data.idToken);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     },
     onError: (err) => {
       console.error("Login error:", err);
@@ -33,22 +37,20 @@ function Login() {
     mutation.mutate(data);
   };
 
- 
   const idToken = localStorage.getItem("idToken");
 
   function checkExpire(expireTime) {
     const nowDate = Math.floor(Date.now() / 1000);
 
     if (nowDate > expireTime) {
-      console.log("Token has expired.");
+      return true;
     } else {
-      console.log("Token has not expired.");
+      return false;
     }
   }
 
   if (idToken) {
     const decodedToken = jwtDecode(idToken);
-    console.log("Token expiry:", decodedToken.exp);
 
     checkExpire(decodedToken.exp);
   } else {
@@ -58,9 +60,9 @@ function Login() {
   const isTokenExpired = () => {
     if (!idToken) {
       return true;
-    }}
+    }
+  };
 
-  
   return (
     <Container
       fluid

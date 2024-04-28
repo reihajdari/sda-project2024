@@ -6,6 +6,7 @@ import CinemaLogo from "../../assets/cinema-icon.png";
 import { getPopularMovies } from "../../api/users";
 import { ThemeContext } from "../../App";
 import "../Home/Header.css";
+import { jwtDecode } from "jwt-decode";
 
 function HeaderSinglePost() {
   const [movies, setMovies] = useState([]);
@@ -13,6 +14,32 @@ function HeaderSinglePost() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
   const theme = useContext(ThemeContext);
+
+  const idToken = localStorage.getItem("idToken");
+
+  function checkExpire(expireTime) {
+    const nowDate = Math.floor(Date.now() / 1000);
+
+    if (nowDate > expireTime) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  if (idToken) {
+    const decodedToken = jwtDecode(idToken);
+
+    checkExpire(decodedToken.exp);
+  } else {
+    console.log("No token found in localStorage.");
+  }
+
+  const isTokenExpired = () => {
+    if (!idToken) {
+      return true;
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -81,9 +108,30 @@ function HeaderSinglePost() {
               <Nav.Link onClick={handleThemeToggle}>
                 {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Nav.Link>
-              <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
-                Login/Register
-              </Nav.Link>
+              {isTokenExpired() ? (
+                <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
+                  Login/Register
+                </Nav.Link>
+              ) : (
+                <>
+                  <Nav.Link
+                    as={Link}
+                    to="/reservations"
+                    onClick={() => navigate("/")}
+                  >
+                    Reservations
+                  </Nav.Link>
+                  <Nav.Link
+                    as={Link}
+                    to="/"
+                    onClick={() => {
+                      localStorage.removeItem("idToken");
+                    }}
+                  >
+                    Logout
+                  </Nav.Link>
+                </>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
