@@ -6,10 +6,43 @@
       "name": "Rei",
       "surname": "Hajdari",
       "email": "reihajdari03@gmail.com",
-      "age": "1",
+      "age": "12",
       "numberOfTickets": "12",
       "theatre": "Theatre 1",
       "movieTitle": "Ape vs. Mecha Ape"
+    },
+    {
+      "id": "0147",
+      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari03@gmail.com",
+      "age": "12",
+      "numberOfTickets": "12",
+      "theatre": "Theatre 1",
+      "movieTitle": "Dune: Part Two"
+    },
+    {
+      "id": "032b",
+      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari01@gmail.com",
+      "age": "122",
+      "numberOfTickets": "11",
+      "theatre": "Theatre 2",
+      "movieTitle": "Ape vs. Mecha Ape"
+    },
+    {
+      "id": "13b1",
+      "userId": "DhM62OhKHId9oFEvivvFPUtVio02",
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari0@gmail.com",
+      "age": "1212",
+      "numberOfTickets": "1212",
+      "theatre": "Theatre 1",
+      "movieTitle": "Godzilla x Kong: The New Empire"
     }
   ]
 }

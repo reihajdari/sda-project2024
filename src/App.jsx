@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import UserScreen from "./screens/UserScreen";
 import Reservations from "./screens/Reservations";
 import AdminDashboard from "./screens/AdminDashboard";
+import Unauthorized from "./screens/Unauthorized";
 
 
 export const client = new QueryClient();
@@ -34,6 +35,10 @@ function App() {
     {
       path: "/admindashboard",
       element: <AdminDashboard />,
+    },
+    {
+      path: "/unauthorized",
+      element: <Unauthorized />,
     },
   ]);
     const [favorites, setFavorites] = useState([]);

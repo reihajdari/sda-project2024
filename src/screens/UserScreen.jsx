@@ -11,6 +11,7 @@ function UserScreen() {
   const darkStyle = {
     backgroundColor: "#333",
     color: "#fff",
+    minHeight: "100vh"
   };
   const lightStyle = {
     backgroundColor: "#f8f9fa",

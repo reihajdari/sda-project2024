@@ -15,7 +15,7 @@ function Home() {
 
   const style =
     theme === "dark"
-      ? { backgroundColor: "#222", color: "black" }
+      ? { backgroundColor: "#222", color: "black", minHeight: "100vh" }
       : { backgroundColor: "white", color: "white" };
 
   return (
