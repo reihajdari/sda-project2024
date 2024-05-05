@@ -1,28 +1,3 @@
 {
-  "reservations": [
-    {
-      "id": "0def",
-      "userId": "xVAjMBQhZQTewKfYOB0IMnPdmUw2",
-      "emailToken": "admin_rei@gmail.com",
-      "name": "Rei",
-      "surname": "Hajdari",
-      "email": "reihajdari00@gmail.com",
-      "age": "15",
-      "numberOfTickets": "12",
-      "theatre": "Theatre 2",
-      "movieTitle": "Dune: Part Two"
-    },
-    {
-      "id": "2daf",
-      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
-      "emailToken": "reihajdari00@gmail.com",
-      "name": "Rei",
-      "surname": "Hajdari",
-      "email": "reihajdari00@gmail.com",
-      "age": "1",
-      "numberOfTickets": "8",
-      "theatre": "Theatre 1",
-      "movieTitle": "Godzilla x Kong: The New Empire"
-    }
-  ]
+  "reservations": []
 }

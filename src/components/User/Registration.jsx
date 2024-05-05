@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Alert } from "antd";
 
 function Registration() {
+  // eslint-disable-next-line no-unused-vars
   const [formData, setFormData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState(null);
@@ -32,14 +33,14 @@ function Registration() {
   const onSubmit = (data) => {
     setFormData(data);
     setIsModalOpen(false);
-    console.log(data);
+   
     mutation.mutate(data);
   };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
-  console.log(formData);
+  
 
   return (
     <div>

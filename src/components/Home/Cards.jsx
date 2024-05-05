@@ -34,9 +34,7 @@ function Cards() {
     const decodedToken = jwtDecode(idToken);
 
     checkExpire(decodedToken.exp);
-  } else {
-    console.log("No token found in localStorage.");
-  }
+  } 
 
   const isTokenExpired = () => {
     if (!idToken) {
