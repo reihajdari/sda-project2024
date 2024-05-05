@@ -34,7 +34,7 @@ function Cards() {
     const decodedToken = jwtDecode(idToken);
 
     checkExpire(decodedToken.exp);
-  } 
+  }
 
   const isTokenExpired = () => {
     if (!idToken) {

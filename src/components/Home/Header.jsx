@@ -21,7 +21,6 @@ function Header() {
 
   const idToken = localStorage.getItem("idToken");
 
-
   function checkExpire(expireTime) {
     const nowDate = Math.floor(Date.now() / 1000);
 

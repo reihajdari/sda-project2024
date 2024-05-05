@@ -1,3 +1,9 @@
 {
-  "reservations": []
+  "reservations": [
+    {
+      "id": "b5bd",
+      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
+      "emailToken": "reihajdari00@gmail.com"
+    }
+  ]
 }

@@ -16,7 +16,7 @@ function Home() {
   const style =
     theme === "dark"
       ? { backgroundColor: "#222", color: "black", minHeight: "100vh" }
-      : { backgroundColor: "white", color: "white" };
+      : { backgroundColor: "white", color: "white", minHeight:"100vh" };
 
   return (
     <div style={style} className="movie-list">

@@ -53,6 +53,7 @@ function SinglePost() {
   const lightStyle = {
     backgroundColor: "#f8f9fa",
     color: "#000",
+    minHeight: "100vh",
   };
 
   const currentStyle =
@@ -230,15 +231,27 @@ function SinglePost() {
 
         {videos.length > 0 ? (
           <div>
-            <div key={videos[0].key}>
+            <div
+              key={videos[0].key}
+              style={{
+                position: "relative",
+                paddingBottom: "56.25%",
+                height: 0,
+              }}
+            >
               <iframe
-                width="560"
-                height="315"
                 src={`https://www.youtube.com/embed/${videos[0].key}`}
-                title={videos[0].name}
+                title={videos.name}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                }}
+                frameBorder="0"
                 allowFullScreen
               ></iframe>
-              <p>{videos[0].name}</p>
             </div>
           </div>
         ) : (
