@@ -100,7 +100,6 @@ function Reservations() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>User_ID</th>
             <th>Name</th>
             <th>Surname</th>
             <th>Email</th>
@@ -115,7 +114,6 @@ function Reservations() {
           {reservation.map((data) => (
             <tr key={data.id}>
               <td>{data.id}</td>
-              <td>{data.userId}</td>
               <td>{data.name}</td>
               <td>{data.surname}</td>
               <td>{data.email}</td>
@@ -155,7 +153,7 @@ function Reservations() {
               <Form.Control
                 type="text"
                 defaultValue={decodedToken.user_id}
-                {...register("userID", { required: "User ID is required" })}
+                {...register("userId", { required: "User ID is required" })}
               />
             </Form.Group>
             <Form.Group controlId="formName">

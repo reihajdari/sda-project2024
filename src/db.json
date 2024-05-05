@@ -1,5 +1,15 @@
 {
   "reservations": [
-  
+    {
+      "id": "5202",
+      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari03@gmail.com",
+      "age": "1",
+      "numberOfTickets": "12",
+      "theatre": "Theatre 1",
+      "movieTitle": "Ape vs. Mecha Ape"
+    }
   ]
 }
