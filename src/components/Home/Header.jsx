@@ -9,7 +9,7 @@ import { SearchContext } from "../../screens/Home";
 import { ThemeContext } from "../../App";
 import "./Header.css";
 import { jwtDecode } from "jwt-decode";
-const allowedUserId = import.meta.env.adminID;
+const allowedUserId = import.meta.env.VITE_APP_ADMIN_ID;
 
 function Header() {
   const search = useContext(SearchContext);
@@ -20,6 +20,7 @@ function Header() {
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 
   const idToken = localStorage.getItem("idToken");
+
 
   function checkExpire(expireTime) {
     const nowDate = Math.floor(Date.now() / 1000);

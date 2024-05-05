@@ -29,11 +29,8 @@ function AdminHeader() {
 
   if (idToken) {
     const decodedToken = jwtDecode(idToken);
-    console.log("Token expiry:", decodedToken.exp);
 
     checkExpire(decodedToken.exp);
-  } else {
-    console.log("No token found in localStorage.");
   }
 
   const isTokenExpired = () => {

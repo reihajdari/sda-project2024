@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteReservation, getAllReservationData } from "../../api/users";
 import { ThemeContext } from "../../App";
 import { jwtDecode } from "jwt-decode";
-const allowedUserId = import.meta.env.adminID;
+const allowedUserId = import.meta.env.VITE_APP_ADMIN_ID;
 
 function AdminReservationPage() {
   const [reservations, setReservations] = useState(null);
