@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { Spinner, Alert, Container, Table, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom"; // For redirecting
-
+import { useNavigate } from "react-router-dom";
 import { deleteReservation, getAllReservationData } from "../../api/users";
 import { ThemeContext } from "../../App";
 import { jwtDecode } from "jwt-decode";
+const allowedUserId = import.meta.env.adminID;
 
 function AdminReservationPage() {
   const [reservations, setReservations] = useState(null);
@@ -13,8 +13,6 @@ function AdminReservationPage() {
   const decodedToken = jwtDecode(idToken);
   const theme = useContext(ThemeContext);
   const navigate = useNavigate();
-
-  const allowedUserId = "DhM62OhKHId9oFEvivvFPUtVio02";
 
   useEffect(() => {
     if (decodedToken.user_id !== allowedUserId) {
@@ -79,6 +77,7 @@ function AdminReservationPage() {
               <th>Name</th>
               <th>Surname</th>
               <th>Email</th>
+              <th>Email from Token</th>
               <th>Age</th>
               <th>Nr. of Tickets</th>
               <th>Theatre</th>
@@ -93,6 +92,7 @@ function AdminReservationPage() {
                 <td>{data.name}</td>
                 <td>{data.surname}</td>
                 <td>{data.email}</td>
+                <td>{data.emailToken}</td>
                 <td>{data.age}</td>
                 <td>{data.numberOfTickets}</td>
                 <td>{data.theatre}</td>

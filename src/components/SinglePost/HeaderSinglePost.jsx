@@ -132,6 +132,7 @@ function HeaderSinglePost() {
                   </Nav.Link>
                 </>
               )}
+              
             </Nav>
           </Navbar.Collapse>
         </Container>

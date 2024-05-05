@@ -8,8 +8,8 @@ import { getPopularMovies } from "../../api/users";
 import { SearchContext } from "../../screens/Home";
 import { ThemeContext } from "../../App";
 import "./Header.css";
-
 import { jwtDecode } from "jwt-decode";
+const allowedUserId = import.meta.env.adminID;
 
 function Header() {
   const search = useContext(SearchContext);
@@ -43,6 +43,18 @@ function Header() {
     if (!idToken) {
       return true;
     }
+  };
+
+  const isAdmin = () => {
+    const idToken = localStorage.getItem("idToken");
+
+    if (!idToken) {
+      return false;
+    }
+
+    const decodedToken = jwtDecode(idToken);
+
+    return allowedUserId === decodedToken.user_id;
   };
 
   const navigate = useNavigate();
@@ -155,12 +167,25 @@ function Header() {
                     as={Link}
                     to="/"
                     onClick={() => {
-                      localStorage.removeItem("idToken");
+                      localStorage.clear("idToken");
                     }}
                   >
                     Logout
                   </Nav.Link>
                 </>
+              )}
+              {isAdmin() ? (
+                <>
+                  <Nav.Link
+                    as={Link}
+                    to="/admindashboard"
+                    onClick={() => navigate("/")}
+                  >
+                    Admin Dashboard
+                  </Nav.Link>
+                </>
+              ) : (
+                <></>
               )}
             </Nav>
           </Navbar.Collapse>

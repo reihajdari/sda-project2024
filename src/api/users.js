@@ -2,7 +2,6 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 const apiKey = import.meta.env.VITE_APP_API_KEY;
 const idToken = localStorage.getItem("idToken");
-const decodedToken = jwtDecode(idToken);
 
 export async function getPopularMovies() {
   const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`;
@@ -48,8 +47,10 @@ export async function logIn(data) {
 }
 
 export async function reservationData(data) {
+  const decodedToken = jwtDecode(idToken);
   const res = await axios.post(" http://localhost:3000/reservations", {
     userId: decodedToken.user_id,
+    emailToken: decodedToken.email,
     name: data.name,
     surname: data.surname,
     email: data.username,
