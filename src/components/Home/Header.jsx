@@ -78,7 +78,11 @@ function Header() {
 
   return (
     <div className={`header-wrapper ${theme.theme}`}>
-      <Navbar expand="lg" className={`navbar ${theme.theme}`} collapseOnSelect>
+      <Navbar
+        expand="lg"
+        className={`navbar-fixed-topnavbar ${theme.theme}`}
+        collapseOnSelect
+      >
         <Container fluid>
           <Navbar.Brand onClick={() => navigate("/")}>
             <img

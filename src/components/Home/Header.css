@@ -49,3 +49,10 @@
   background-color: #fff;
   color: #000;
 }
+.navbar-brand {
+  color: #333;
+  font-weight: bold;
+}
+.nav-link:hover {
+  color: rgb(71, 176, 214) !important;
+}

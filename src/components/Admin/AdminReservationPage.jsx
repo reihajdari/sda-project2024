@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   deleteReservation,
   getAllReservationData,
-} from "../../api/reservations";
+} from "../../api/reservations,js";
 import { GlobalContext } from "../../App";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";

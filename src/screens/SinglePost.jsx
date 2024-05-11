@@ -15,7 +15,7 @@ import { GlobalContext } from "../App";
 import Footer from "../components/Home/Footer";
 import { Modal } from "antd";
 import HeaderSinglePost from "../components/SinglePost/HeaderSinglePost";
-import { reservationData } from "../api/reservations";
+import { reservationData } from "../api/reservations,js";
 import { getSinglePost } from "../api/movies";
 import { useForm } from "react-hook-form";
 
@@ -25,14 +25,16 @@ function SinglePost() {
   // eslint-disable-next-line no-unused-vars
   const [formData, setFormData] = useState(null);
 
-
   const params = useParams();
-  const { data:movie, isLoading, isError } = useQuery({
+  const {
+    data: movie,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["user", params.postId],
     queryFn: () => getSinglePost(params.postId),
     enabled: !!params.postId,
   });
-
 
   const baseStyle = {
     transition: "all 0.3s",
