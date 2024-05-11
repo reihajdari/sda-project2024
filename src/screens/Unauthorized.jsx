@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaLock } from "react-icons/fa";
-import { ThemeContext } from "../App";
+import { GlobalContext } from "../App";
 
 function Unauthorized() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(GlobalContext);
 
   const baseStyle = {
     transition: "all 0.3s",

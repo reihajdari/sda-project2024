@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import Reservation from "../components/User/Reservation";
-import { ThemeContext } from "../App";
+import { GlobalContext } from "../App";
 import UserHeader from "../components/User/UserHeader";
 
 function Reservations() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(GlobalContext);
   const baseStyle = {
     transition: "all 0.3s",
   };

@@ -6,10 +6,10 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { useContext, useEffect } from "react";
-import { ThemeContext } from "../../App";
+import { GlobalContext } from "../../App";
 
 function Footer() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(GlobalContext);
 
   useEffect(() => {
     localStorage.setItem("theme", JSON.stringify(theme));
@@ -30,6 +30,24 @@ function Footer() {
     borderColor: isDarkMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)",
   };
 
+  const socials = [
+    { iconName: "facebook-f", link: "https://www.facebook.com/rei.hajdari.5" },
+    { iconName: "twitter", link: "https://twiter.com" },
+    { iconName: "google", link: "https://google.com" },
+    {
+      iconName: "instagram",
+      link: "https://www.instagram.com/rei__hajdari/?hl=af",
+    },
+    {
+      iconName: "linkedin",
+      link: "https://www.linkedin.com/in/rei-hajdari-74a9bab8/",
+    },
+    { iconName: "github", link: "https://github.com/reihajdari" },
+  ];
+
+  const d = new Date();
+  let year = d.getFullYear();
+
   return (
     <MDBFooter style={style} className={`text-center text-lg-start`}>
       <section
@@ -41,40 +59,16 @@ function Footer() {
         </div>
 
         <div>
-          <a
-            href="https://www.facebook.com/rei.hajdari.5"
-            target="blank"
-            className="me-4 text-reset"
-          >
-            <MDBIcon fab icon="facebook-f" style={linkStyle} />
-          </a>
-          <a href="#!" target="blank" className="me-4 text-reset">
-            <MDBIcon fab icon="twitter" style={linkStyle} />
-          </a>
-          <a href="#!" target="blank" className="me-4 text-reset">
-            <MDBIcon fab icon="google" style={linkStyle} />
-          </a>
-          <a
-            href="https://www.instagram.com/rei__hajdari/"
-            target="blank"
-            className="me-4 text-reset"
-          >
-            <MDBIcon fab icon="instagram" style={linkStyle} />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/rei-hajdari-74a9bab8/"
-            target="blank"
-            className="me-4 text-reset"
-          >
-            <MDBIcon fab icon="linkedin" style={linkStyle} />
-          </a>
-          <a
-            href="https://github.com/reihajdari"
-            target="blank"
-            className="me-4 text-reset"
-          >
-            <MDBIcon fab icon="github" style={linkStyle} />
-          </a>
+          {socials.map((social) => (
+            <a
+              href={social.link}
+              target="blank"
+              className="me-4 text-reset"
+              key={social.iconName}
+            >
+              <MDBIcon fab icon={social.iconName} style={linkStyle} />
+            </a>
+          ))}
         </div>
       </section>
 
@@ -204,7 +198,7 @@ function Footer() {
             : "rgba(0, 0, 0, 0.05)",
         }}
       >
-        © 2024 Copyright:
+        © {year} Copyright:
         <a className="text-reset fw-bold" href="#!" style={linkStyle}>
           Rei Hajdari - All Rights Reserved
         </a>

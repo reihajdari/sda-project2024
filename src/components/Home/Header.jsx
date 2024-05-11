@@ -4,56 +4,23 @@ import { Navbar, Container, Form, Nav } from "react-bootstrap";
 import { Modal } from "antd";
 import CinemaLogo from "../../assets/cinema-icon.png";
 import HeaderInfo from "./HeaderInfo";
-import { getPopularMovies } from "../../api/users";
+import { getPopularMovies } from "../../api/movies";
 import { SearchContext } from "../../screens/Home";
-import { ThemeContext } from "../../App";
+import { GlobalContext } from "../../App";
 import "./Header.css";
-import { jwtDecode } from "jwt-decode";
-const allowedUserId = import.meta.env.VITE_APP_ADMIN_ID;
+import { checkExpire, isAdmin, isTokenExpired } from "../../helpers";
 
 function Header() {
   const search = useContext(SearchContext);
-  const theme = useContext(ThemeContext);
+  const theme = useContext(GlobalContext);
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 
-  const idToken = localStorage.getItem("idToken");
-
-  function checkExpire(expireTime) {
-    const nowDate = Math.floor(Date.now() / 1000);
-
-    if (nowDate > expireTime) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  if (idToken) {
-    const decodedToken = jwtDecode(idToken);
-
-    checkExpire(decodedToken.exp);
-  }
-
-  const isTokenExpired = () => {
-    if (!idToken) {
-      return true;
-    }
-  };
-
-  const isAdmin = () => {
-    const idToken = localStorage.getItem("idToken");
-
-    if (!idToken) {
-      return false;
-    }
-
-    const decodedToken = jwtDecode(idToken);
-
-    return allowedUserId === decodedToken.user_id;
-  };
+  checkExpire();
+  isTokenExpired();
+  isAdmin();
 
   const navigate = useNavigate();
 
@@ -138,52 +105,85 @@ function Header() {
               />
             </Form>
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/" onClick={() => navigate("/")}>
+              <Nav.Link
+                style={{ color: theme.theme === "dark" ? "white" : "black" }}
+                as={Link}
+                to="/"
+                onClick={() => navigate("/")}
+              >
                 Home
               </Nav.Link>
-              <Nav.Link onClick={showModal}>My Favorites</Nav.Link>
+              {!isAdmin() && (
+                <Nav.Link
+                  onClick={showModal}
+                  style={{ color: theme.theme === "dark" ? "white" : "black" }}
+                >
+                  My Favorites
+                </Nav.Link>
+              )}
 
-              <Nav.Link onClick={handleThemeToggle}>
+              <Nav.Link
+                onClick={handleThemeToggle}
+                style={{ color: theme.theme === "dark" ? "white" : "black" }}
+              >
                 {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Nav.Link>
               {isTokenExpired() ? (
                 <>
-                  <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
+                  <Nav.Link
+                    as={Link}
+                    style={{
+                      color: theme.theme === "dark" ? "white" : "black",
+                    }}
+                    to="/user"
+                    onClick={() => navigate("/")}
+                  >
                     Login/Register
                   </Nav.Link>
                 </>
               ) : (
                 <>
-                  <Nav.Link
-                    as={Link}
-                    to="/reservations"
-                    onClick={() => navigate("/")}
-                  >
-                    Reservations
-                  </Nav.Link>
+                  {!isAdmin() && (
+                    <Nav.Link
+                      as={Link}
+                      to="/reservations"
+                      onClick={() => navigate("/")}
+                      style={{
+                        color: theme.theme === "dark" ? "white" : "black",
+                      }}
+                    >
+                      Reservations
+                    </Nav.Link>
+                  )}
+                  {isAdmin() ? (
+                    <>
+                      <Nav.Link
+                        as={Link}
+                        to="/admindashboard"
+                        onClick={() => navigate("/")}
+                        style={{
+                          color: theme.theme === "dark" ? "white" : "black",
+                        }}
+                      >
+                        Admin Dashboard
+                      </Nav.Link>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                   <Nav.Link
                     as={Link}
                     to="/"
                     onClick={() => {
                       localStorage.clear("idToken");
                     }}
+                    style={{
+                      color: theme.theme === "dark" ? "white" : "black",
+                    }}
                   >
                     Logout
                   </Nav.Link>
                 </>
-              )}
-              {isAdmin() ? (
-                <>
-                  <Nav.Link
-                    as={Link}
-                    to="/admindashboard"
-                    onClick={() => navigate("/")}
-                  >
-                    Admin Dashboard
-                  </Nav.Link>
-                </>
-              ) : (
-                <></>
               )}
             </Nav>
           </Navbar.Collapse>
@@ -201,7 +201,12 @@ function Header() {
         <ul>
           {filteredFavorites.map((movie) => (
             <li key={movie.id}>
-              <Link to={`/posts/${movie.id}`}>{movie.title}</Link>
+              <Link
+                to={`/posts/${movie.id}`}
+                style={{ color: theme.theme === "dark" ? "white" : "black" }}
+              >
+                {movie.title}
+              </Link>
             </li>
           ))}
         </ul>

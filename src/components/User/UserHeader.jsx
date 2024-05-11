@@ -3,42 +3,19 @@ import { Container, Navbar, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import CinemaLogo from "../../assets/cinema-icon.png";
-import { getPopularMovies } from "../../api/users";
-import { ThemeContext } from "../../App";
+import { getPopularMovies } from "../../api/movies";
+import { GlobalContext } from "../../App";
 import "../Home/Header.css";
-import { jwtDecode } from "jwt-decode";
+import { checkExpire, isAdmin, isTokenExpired } from "../../helpers";
 
 function UserHeader() {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
-  const theme = useContext(ThemeContext);
-
-  const idToken = localStorage.getItem("idToken");
-
-  function checkExpire(expireTime) {
-    const nowDate = Math.floor(Date.now() / 1000);
-
-    if (nowDate > expireTime) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  if (idToken) {
-    const decodedToken = jwtDecode(idToken);
-    
-
-    checkExpire(decodedToken.exp);
-  } 
-
-  const isTokenExpired = () => {
-    if (!idToken) {
-      return true;
-    }
-  };
+  const theme = useContext(GlobalContext);
+  checkExpire();
+  isTokenExpired();
 
   const navigate = useNavigate();
 
@@ -100,16 +77,37 @@ function UserHeader() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/" onClick={() => navigate("/")}>
+              <Nav.Link
+                style={{ color: theme.theme === "dark" ? "white" : "black" }}
+                as={Link}
+                to="/"
+                onClick={() => navigate("/")}
+              >
                 Home
               </Nav.Link>
-              <Nav.Link onClick={showModal}>My Favorites</Nav.Link>
-              <Nav.Link onClick={handleThemeToggle}>
+              <Nav.Link
+                onClick={showModal}
+                style={{ color: theme.theme === "dark" ? "white" : "black" }}
+              >
+                My Favorites
+              </Nav.Link>
+
+              <Nav.Link
+                onClick={handleThemeToggle}
+                style={{ color: theme.theme === "dark" ? "white" : "black" }}
+              >
                 {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Nav.Link>
               {isTokenExpired() ? (
                 <>
-                  <Nav.Link as={Link} to="/user" onClick={() => navigate("/")}>
+                  <Nav.Link
+                    as={Link}
+                    style={{
+                      color: theme.theme === "dark" ? "white" : "black",
+                    }}
+                    to="/user"
+                    onClick={() => navigate("/")}
+                  >
                     Login/Register
                   </Nav.Link>
                 </>
@@ -119,6 +117,9 @@ function UserHeader() {
                     as={Link}
                     to="/reservations"
                     onClick={() => navigate("/")}
+                    style={{
+                      color: theme.theme === "dark" ? "white" : "black",
+                    }}
                   >
                     Reservations
                   </Nav.Link>
@@ -126,12 +127,31 @@ function UserHeader() {
                     as={Link}
                     to="/"
                     onClick={() => {
-                      localStorage.removeItem("idToken");
+                      localStorage.clear("idToken");
+                    }}
+                    style={{
+                      color: theme.theme === "dark" ? "white" : "black",
                     }}
                   >
                     Logout
                   </Nav.Link>
                 </>
+              )}
+              {isAdmin() ? (
+                <>
+                  <Nav.Link
+                    as={Link}
+                    to="/admindashboard"
+                    onClick={() => navigate("/")}
+                    style={{
+                      color: theme.theme === "dark" ? "white" : "black",
+                    }}
+                  >
+                    Admin Dashboard
+                  </Nav.Link>
+                </>
+              ) : (
+                <></>
               )}
             </Nav>
           </Navbar.Collapse>

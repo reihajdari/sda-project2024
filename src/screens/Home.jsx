@@ -3,10 +3,10 @@ import Footer from "../components/Home/Footer";
 import Header from "../components/Home/Header";
 import { createContext, useContext, useEffect, useState } from "react";
 export const SearchContext = createContext();
-import { ThemeContext } from "../App";
+import { GlobalContext } from "../App";
 
 function Home() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {

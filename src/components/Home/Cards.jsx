@@ -1,80 +1,33 @@
 import { useState, useEffect, useContext } from "react";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { getPopularMovies } from "../../api/users";
+import { Row, Col, Button, Card } from "react-bootstrap";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { StarTwoTone } from "@ant-design/icons";
+import { getPopularMovies } from "../../api/movies";
 import { SearchContext } from "../../screens/Home.jsx";
-import { ThemeContext } from "../../App";
+import { GlobalContext } from "../../App";
+import { checkExpire, isTokenExpired, trimDescription } from "../../helpers.js";
 import "./cards.css";
-import { jwtDecode } from "jwt-decode";
 
 function Cards() {
-  const [movies, setMovies] = useState([]);
   const [showMoreMap, setShowMoreMap] = useState({});
   const [favorites, setFavorites] = useState([]);
   const search = useContext(SearchContext);
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(GlobalContext);
 
-  const idToken = localStorage.getItem("idToken");
+  const tokenExpired = isTokenExpired();
+  checkExpire();
 
-  function checkExpire(expireTime) {
-    const nowDate = Math.floor(Date.now() / 1000);
-
-    if (nowDate > expireTime) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  if (idToken) {
-    const decodedToken = jwtDecode(idToken);
-
-    checkExpire(decodedToken.exp);
-  }
-
-  const isTokenExpired = () => {
-    if (!idToken) {
-      return true;
-    }
-  };
-
-  const baseStyle = {
-    transition: "all 0.3s",
-  };
-  const darkStyle = {
-    backgroundColor: "#333",
-    color: "#fff",
-  };
-  const lightStyle = {
-    backgroundColor: "#f8f9fa",
-    color: "#000",
-  };
-
-  const currentStyle =
-    theme === "dark"
-      ? { ...baseStyle, ...darkStyle }
-      : { ...baseStyle, ...lightStyle };
+  const {
+    data: popularMovies,
+    error,
+    isLoading,
+  } = useQuery({ queryKey: ["popularMovies"], queryFn: getPopularMovies });
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
-
-    getPopularMovies()
-      .then((data) => {
-        setMovies(data.results);
-      })
-      .catch((error) => {
-        console.error("Error fetching popular movies:", error);
-      });
   }, []);
-
-  const trimDescription = (text, maxLength) => {
-    return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
-  };
 
   const toggleShowMore = (id) => {
     setShowMoreMap((prev) => ({
@@ -96,16 +49,35 @@ function Cards() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  const filteredMovies = movies.filter((movie) =>
+  if (isLoading) {
+    return <div>Loading popular movies...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching popular movies: {error.message}</div>;
+  }
+
+  const filteredMovies = popularMovies.results?.filter((movie) =>
     movie.title.toLowerCase().includes(search.searchTerm.toLowerCase())
   );
 
   return (
-    <div style={currentStyle}>
+    <div
+      style={{
+        backgroundColor: theme === "dark" ? "#333" : "#f8f9fa",
+        color: theme === "dark" ? "#fff" : "#000",
+      }}
+    >
       <Row xs={1} md={3} className="g-4">
-        {filteredMovies.map((movie) => (
+        {filteredMovies?.map((movie) => (
           <Col key={movie.id}>
-            <Card style={currentStyle} className="card">
+            <Card
+              style={{
+                backgroundColor: theme === "dark" ? "#333" : "#f8f9fa",
+                color: theme === "dark" ? "#fff" : "#000",
+              }}
+              className="card"
+            >
               <Card.Img
                 variant="top"
                 src={
@@ -114,45 +86,37 @@ function Cards() {
                     : "https://via.placeholder.com/150"
                 }
               />
-              <Card.Body style={currentStyle}>
+              <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>
                   {showMoreMap[movie.id]
                     ? movie.overview
                     : trimDescription(movie.overview, 50)}
                 </Card.Text>
-                <Button
-                  variant="link"
-                  onClick={() => toggleShowMore(movie.id)}
-                  style={{ color: theme === "dark" ? "#00f" : "#000" }}
-                >
+                <Button variant="link" onClick={() => toggleShowMore(movie.id)}>
                   {showMoreMap[movie.id] ? "Less" : "More"}
                 </Button>
                 <Card.Text>Release Date: {movie.release_date}</Card.Text>
                 <Card.Text>Vote Average: {movie.vote_average}</Card.Text>
-                <Link to={`/posts/${movie.id}`}>
-                  {isTokenExpired() ? (
-                    ""
-                  ) : (
-                    <Button
-                      variant="primary"
-                      style={{
-                        backgroundColor: theme === "dark" ? "#444" : "#007bff",
-                      }}
-                    >
-                      See Details
-                    </Button>
-                  )}
-                </Link>
+                {tokenExpired ? (
+                  <Button
+                    variant="primary"
+                    disabled
+                    title="You need to be logged in to see details"
+                  >
+                    See Details
+                  </Button>
+                ) : (
+                  <Link to={`/posts/${movie.id}`}>
+                    <Button variant="primary">See Details</Button>
+                  </Link>
+                )}
               </Card.Body>
-              {isTokenExpired() ? (
-                ""
-              ) : (
+              {!tokenExpired && (
                 <Card.Footer
                   style={{
-                    borderTop: `1px solid ${
-                      theme === "dark" ? "#555" : "#ddd"
-                    }`,
+                    borderTop:
+                      theme === "dark" ? "1px solid #555" : "1px solid #ddd",
                   }}
                 >
                   <StarTwoTone

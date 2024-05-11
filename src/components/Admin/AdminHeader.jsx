@@ -1,43 +1,23 @@
 import { useState, useEffect, useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import CinemaLogo from "../../assets/cinema-icon.png";
-import { getPopularMovies } from "../../api/users";
-import { ThemeContext } from "../../App";
+import { getPopularMovies } from "../../api/movies";
+import { GlobalContext } from "../../App";
 import "../Home/Header.css";
-import { jwtDecode } from "jwt-decode";
+import { checkExpire, isAdmin, isTokenExpired } from "../../helpers";
 
 function AdminHeader() {
-  const [movies, setMovies] = useState([]);
+  const [movies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
-  const theme = useContext(ThemeContext);
+  const theme = useContext(GlobalContext);
 
-  const idToken = localStorage.getItem("idToken");
-
-  function checkExpire(expireTime) {
-    const nowDate = Math.floor(Date.now() / 1000);
-
-    if (nowDate > expireTime) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  if (idToken) {
-    const decodedToken = jwtDecode(idToken);
-
-    checkExpire(decodedToken.exp);
-  }
-
-  const isTokenExpired = () => {
-    if (!idToken) {
-      return true;
-    }
-  };
+  checkExpire();
+  isTokenExpired();
 
   const navigate = useNavigate();
 
@@ -50,20 +30,25 @@ function AdminHeader() {
     theme.setTheme(newTheme);
   };
 
-  useEffect(() => {
-    getPopularMovies()
-      .then((data) => {
-        setMovies(data.results);
-        setFilteredMovies(data.results);
-      })
-      .catch((error) => {
-        console.error("Error fetching popular movies:", error);
-      });
+  const {
+    data: moviesData,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["popularMovies"],
+    queryFn: getPopularMovies,
+  });
 
+  useEffect(() => {
+    if (moviesData) {
+      setFilteredMovies(moviesData.results);
+    }
+  }, [moviesData]);
+
+  useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavoriteMovieIds(storedFavorites);
   }, []);
-
   useEffect(() => {
     const favorites = movies.filter((movie) =>
       favoriteMovieIds.includes(movie.id)
@@ -82,6 +67,14 @@ function AdminHeader() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching popular movies: {error.message}</div>;
+  }
 
   return (
     <div className={`header-wrapper ${theme.theme}`}>
@@ -102,7 +95,14 @@ function AdminHeader() {
               <Nav.Link as={Link} to="/" onClick={() => navigate("/")}>
                 Home
               </Nav.Link>
-              <Nav.Link onClick={showModal}>My Favorites</Nav.Link>
+              {!isAdmin() && (
+                <Nav.Link
+                  onClick={showModal}
+                  style={{ color: theme.theme === "dark" ? "white" : "black" }}
+                >
+                  My Favorites
+                </Nav.Link>
+              )}
               <Nav.Link onClick={handleThemeToggle}>
                 {theme.theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Nav.Link>
@@ -114,13 +114,31 @@ function AdminHeader() {
                 </>
               ) : (
                 <>
-                  <Nav.Link
-                    as={Link}
-                    to="/reservations"
-                    onClick={() => navigate("/")}
-                  >
-                    Reservations
-                  </Nav.Link>
+                  {!isAdmin() && (
+                    <Nav.Link
+                      as={Link}
+                      to="/reservations"
+                      onClick={() => navigate("/")}
+                    >
+                      Reservations
+                    </Nav.Link>
+                  )}
+                  {isAdmin() ? (
+                    <>
+                      <Nav.Link
+                        as={Link}
+                        to="/admindashboard"
+                        onClick={() => navigate("/")}
+                        style={{
+                          color: theme.theme === "dark" ? "white" : "black",
+                        }}
+                      >
+                        Admin Dashboard
+                      </Nav.Link>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                   <Nav.Link
                     as={Link}
                     to="/"

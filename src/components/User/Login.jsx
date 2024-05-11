@@ -2,14 +2,17 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Col } from "react-bootstrap";
 import { useMutation } from "@tanstack/react-query";
-import { logIn } from "../../api/users";
+import { logIn } from "../../api/auth";
 import { Alert } from "antd";
 import Registration from "./Registration";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { checkExpire, isTokenExpired } from "../../helpers";
 function Login() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+
+  checkExpire();
+  isTokenExpired();
 
   const mutation = useMutation({
     mutationFn: logIn,
@@ -35,30 +38,6 @@ function Login() {
 
   const onSubmit = (data) => {
     mutation.mutate(data);
-  };
-
-  const idToken = localStorage.getItem("idToken");
-
-  function checkExpire(expireTime) {
-    const nowDate = Math.floor(Date.now() / 1000);
-
-    if (nowDate > expireTime) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  if (idToken) {
-    const decodedToken = jwtDecode(idToken);
-
-    checkExpire(decodedToken.exp);
-  } 
-
-  const isTokenExpired = () => {
-    if (!idToken) {
-      return true;
-    }
   };
 
   return (

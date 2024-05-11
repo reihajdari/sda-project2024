@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import AdminHeader from "../components/Admin/AdminHeader";
 import AdminReservationPage from "../components/Admin/AdminReservationPage";
-import { ThemeContext } from "../App";
+import { GlobalContext } from "../App";
 
 function AdminDashboard() {
-   const { theme } = useContext(ThemeContext);
+   const { theme } = useContext(GlobalContext);
    const baseStyle = {
      transition: "all 0.3s",
    };

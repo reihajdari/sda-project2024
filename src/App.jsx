@@ -9,12 +9,10 @@ import Reservations from "./screens/Reservations";
 import AdminDashboard from "./screens/AdminDashboard";
 import Unauthorized from "./screens/Unauthorized";
 
-
 export const client = new QueryClient();
-export const ThemeContext = createContext();
+export const GlobalContext = createContext();
 
 function App() {
-
   const router = createBrowserRouter([
     {
       path: "/",
@@ -41,11 +39,9 @@ function App() {
       element: <Unauthorized />,
     },
   ]);
-    const [favorites, setFavorites] = useState([]);
-    
+  const [favorites, setFavorites] = useState([]);
 
   const themeFromLocalStorage = JSON.parse(localStorage.getItem("theme"));
-  
 
   const checkedThemeFromLocalStorage = themeFromLocalStorage
     ? themeFromLocalStorage
@@ -53,26 +49,21 @@ function App() {
 
   const [theme, setTheme] = useState(checkedThemeFromLocalStorage);
 
-  
-
   const defaultTheme = "dark";
   localStorage.setItem("theme", JSON.stringify(defaultTheme));
-  
 
   return (
     <QueryClientProvider client={client}>
-     
-        <ThemeContext.Provider
-          value={{
-            theme,
-            setTheme,
-            favorites,
-            setFavorites,
-          
-          }}
-        >
-          <RouterProvider router={router} />
-        </ThemeContext.Provider>
+      <GlobalContext.Provider
+        value={{
+          theme,
+          setTheme,
+          favorites,
+          setFavorites,
+        }}
+      >
+        <RouterProvider router={router} />
+      </GlobalContext.Provider>
     </QueryClientProvider>
   );
 }

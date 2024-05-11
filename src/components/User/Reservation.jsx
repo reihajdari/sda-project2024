@@ -3,7 +3,7 @@ import {
   getSingleReservationUser,
   deleteReservation,
   updateReservation,
-} from "../../api/users";
+} from "../../api/reservations";
 import {
   Spinner,
   Alert,
@@ -16,14 +16,14 @@ import {
 
 import { useForm } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
-import { ThemeContext } from "../../App";
+import { GlobalContext } from "../../App";
 
 function Reservation() {
   const [reservation, setReservation] = useState(null);
   const [isError, setIsError] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentReservation, setCurrentReservation] = useState(null);
-  const theme = useContext(ThemeContext);
+  const theme = useContext(GlobalContext);
 
   const idToken = localStorage.getItem("idToken");
   const decodedToken = jwtDecode(idToken);

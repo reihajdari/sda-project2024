@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
-import { ThemeContext } from "../../App";
+import { GlobalContext } from "../../App";
 import "./HeaderInfo.css";
 
 function HeaderInfo() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(GlobalContext);
 
   useEffect(() => {
     localStorage.setItem("theme", JSON.stringify(theme));

@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import Login from "../components/User/Login";
 import UserHeader from "../components/User/UserHeader";
-import { ThemeContext } from "../App";
+import { GlobalContext } from "../App";
 
 function UserScreen() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(GlobalContext);
   const baseStyle = {
     transition: "all 0.3s",
   };

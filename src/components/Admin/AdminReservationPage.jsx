@@ -1,55 +1,57 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
 import { Spinner, Alert, Container, Table, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { deleteReservation, getAllReservationData } from "../../api/users";
-import { ThemeContext } from "../../App";
+import {
+  deleteReservation,
+  getAllReservationData,
+} from "../../api/reservations";
+import { GlobalContext } from "../../App";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
-const allowedUserId = import.meta.env.VITE_APP_ADMIN_ID;
 
-function AdminReservationPage() {
-  const [reservations, setReservations] = useState(null);
-  const [isError, setIsError] = useState(false);
+const AdminReservationPage = () => {
+  const navigate = useNavigate();
+  const theme = useContext(GlobalContext);
+  const queryClient = useQueryClient();
+
+  const allowedUserId = import.meta.env.VITE_APP_ADMIN_ID;
   const idToken = localStorage.getItem("idToken");
   const decodedToken = jwtDecode(idToken);
-  const theme = useContext(ThemeContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (decodedToken.user_id !== allowedUserId) {
       navigate("/unauthorized");
       return;
     }
+  }, [decodedToken, allowedUserId, navigate]);
 
-    getAllReservationData()
-      .then((data) => {
-        setReservations(data);
-        setIsError(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching reservation data:", error);
-        setIsError(true);
+  const {
+    data: reservations,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["reservations"],
+    queryFn: getAllReservationData,
+  });
+
+  const mutation = useMutation({
+    mutationFn: deleteReservation,
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(["reservations"], (oldData) => {
+        return oldData.filter((reservation) => reservation.id !== variables);
       });
-  }, [decodedToken.user_id, navigate]);
+      queryClient.invalidateQueries(["reservations"]);
+    },
+    onError: (mutationError) => {
+      console.error("Error deleting reservation:", mutationError);
+    },
+  });
 
   const handleDelete = (id) => {
-    deleteReservation(id)
-      .then(() => {
-        setReservations((prevReservations) =>
-          prevReservations.filter((r) => r.id !== id)
-        );
-      })
-      .catch((error) => console.error("Error deleting reservation:", error));
+    mutation.mutate(id);
   };
 
-  if (isError) {
-    return (
-      <Container className="mt-5 text-center">
-        <Alert variant="danger">Error fetching reservation data!</Alert>
-      </Container>
-    );
-  }
-
-  if (reservations === null) {
+  if (isLoading) {
     return (
       <Container className="mt-5 text-center">
         <Spinner animation="border" role="status">
@@ -59,7 +61,15 @@ function AdminReservationPage() {
     );
   }
 
-  if (reservations.length === 0) {
+  if (error) {
+    return (
+      <Container className="mt-5 text-center">
+        <Alert variant="danger">Error fetching reservation data!</Alert>
+      </Container>
+    );
+  }
+
+  if (!reservations || reservations.length === 0) {
     return (
       <Container className="mt-5 text-center">
         <p>No reservations found.</p>
@@ -77,30 +87,28 @@ function AdminReservationPage() {
               <th>Name</th>
               <th>Surname</th>
               <th>Email</th>
-              <th>Email from Token</th>
               <th>Age</th>
-              <th>Nr. of Tickets</th>
+              <th>Number of Tickets</th>
               <th>Theatre</th>
               <th>Movie Title</th>
               <th>Delete</th>
             </tr>
           </thead>
           <tbody>
-            {reservations.map((data) => (
-              <tr key={data.id}>
-                <td>{data.id}</td>
-                <td>{data.name}</td>
-                <td>{data.surname}</td>
-                <td>{data.email}</td>
-                <td>{data.emailToken}</td>
-                <td>{data.age}</td>
-                <td>{data.numberOfTickets}</td>
-                <td>{data.theatre}</td>
-                <td>{data.movieTitle}</td>
+            {reservations.map((reservation) => (
+              <tr key={reservation.id}>
+                <td>{reservation.id}</td>
+                <td>{reservation.name}</td>
+                <td>{reservation.surname}</td>
+                <td>{reservation.email}</td>
+                <td>{reservation.age}</td>
+                <td>{reservation.numberOfTickets}</td>
+                <td>{reservation.theatre}</td>
+                <td>{reservation.movieTitle}</td>
                 <td>
                   <Button
                     variant="danger"
-                    onClick={() => handleDelete(data.id)}
+                    onClick={() => handleDelete(reservation.id)}
                   >
                     Delete
                   </Button>
@@ -112,6 +120,6 @@ function AdminReservationPage() {
       </div>
     </Container>
   );
-}
+};
 
 export default AdminReservationPage;

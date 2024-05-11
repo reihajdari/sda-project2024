@@ -11,36 +11,28 @@ import {
   Image,
   Form,
 } from "react-bootstrap";
-import { ThemeContext } from "../App";
+import { GlobalContext } from "../App";
 import Footer from "../components/Home/Footer";
 import { Modal } from "antd";
 import HeaderSinglePost from "../components/SinglePost/HeaderSinglePost";
-import { getSinglePost, reservationData } from "../api/users";
+import { reservationData } from "../api/reservations";
+import { getSinglePost } from "../api/movies";
 import { useForm } from "react-hook-form";
 
 function SinglePost() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(GlobalContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [formData, setFormData] = useState(null);
-  const [movie, setMovie] = useState(null);
+
 
   const params = useParams();
-  const { data, isLoading, isError } = useQuery({
+  const { data:movie, isLoading, isError } = useQuery({
     queryKey: ["user", params.postId],
     queryFn: () => getSinglePost(params.postId),
     enabled: !!params.postId,
   });
 
-  useEffect(() => {
-    getSinglePost(params.postId)
-      .then((data) => {
-        setMovie(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching movie:", error);
-      });
-  }, [params.postId]);
 
   const baseStyle = {
     transition: "all 0.3s",
@@ -99,7 +91,7 @@ function SinglePost() {
     );
   }
 
-  const videos = data?.videos?.results || [];
+  const videos = movie?.videos?.results || [];
 
   return (
     <section style={currentStyle}>
@@ -107,31 +99,31 @@ function SinglePost() {
       <Container className="mt-5">
         <Row className="justify-content-center">
           <Col lg="8">
-            <h2>{data?.title}</h2>
+            <h2>{movie?.title}</h2>
             <p>
-              <strong>Release Date:</strong> {data?.release_date}
+              <strong>Release Date:</strong> {movie?.release_date}
             </p>
             <p>
-              <strong>Overview:</strong> {data?.overview}
+              <strong>Overview:</strong> {movie?.overview}
             </p>
             <p>
-              <strong>Vote Average:</strong> {data?.vote_average}
+              <strong>Vote Average:</strong> {movie?.vote_average}
             </p>
             <p>
-              <strong>Original Language:</strong> {data?.original_language}
+              <strong>Original Language:</strong> {movie?.original_language}
             </p>
             <p>
-              <strong>Popularity:</strong> {data?.popularity}
+              <strong>Popularity:</strong> {movie?.popularity}
             </p>
             <p>
-              <strong>Status:</strong> {data?.status}
+              <strong>Status:</strong> {movie?.status}
             </p>
             <Button onClick={showModal}>Make Reservation</Button>
           </Col>
           <Col lg="4">
             <Image
-              src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
-              alt={data?.title}
+              src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
+              alt={movie?.title}
               fluid
             />
           </Col>
@@ -207,7 +199,7 @@ function SinglePost() {
             <Form.Group controlId="formMovie">
               <Form.Label>Movie</Form.Label>
               <Form.Control
-                {...register("movieTitle", { value: movie.title })}
+                {...register("movieTitle", { value: movie?.title })}
               />
             </Form.Group>
             <Form.Group controlId="formTheatre">

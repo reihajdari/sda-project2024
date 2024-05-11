@@ -4,7 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import { Modal } from "antd";
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
-import { signUp } from "../../api/users";
+import { signUp } from "../../api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { Alert } from "antd";
 
@@ -33,14 +33,13 @@ function Registration() {
   const onSubmit = (data) => {
     setFormData(data);
     setIsModalOpen(false);
-   
+
     mutation.mutate(data);
   };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
-  
 
   return (
     <div>

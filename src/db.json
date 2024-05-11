@@ -1,9 +1,26 @@
 {
   "reservations": [
     {
-      "id": "b5bd",
+      "id": "102e",
       "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
-      "emailToken": "reihajdari00@gmail.com"
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari03@gmail.com",
+      "age": "22",
+      "numberOfTickets": "12",
+      "theatre": "Theatre 1",
+      "movieTitle": "Godzilla Minus One"
+    },
+    {
+      "id": "6221",
+      "userId": "xVAjMBQhZQTewKfYOB0IMnPdmUw2",
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari03@gmail.com",
+      "age": "12",
+      "numberOfTickets": "23",
+      "theatre": "Theatre 1",
+      "movieTitle": "The Idea of You"
     }
   ]
 }

@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { getSinglePost } from "../../api/users";
 import CardComponent from "react-bootstrap/Card";
 import { ThemeContext } from "../../App";
+import { useQuery } from "@tanstack/react-query";
 
-// eslint-disable-next-line react/prop-types
-function MovieCard({ postId }) {
-  const [movie, setMovie] = useState(null);
+function MovieCard() {
+  const [movie] = useState(null);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -17,15 +16,19 @@ function MovieCard({ postId }) {
       ? { backgroundColor: "#333", color: "#fff" }
       : { backgroundColor: "#f8f9fa", color: "#000" };
 
-  useEffect(() => {
-    getSinglePost(postId)
-      .then((data) => {
-        setMovie(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching movie:", error);
-      });
-  }, [postId]);
+  const {
+    data: getSinglePost,
+    error,
+    isLoading,
+  } = useQuery({ queryKey: ["singleMovie"], queryFn: getSinglePost });
+
+  if (isLoading) {
+    return <div>Loading popular movies...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching popular movies: {error.message}</div>;
+  }
 
   return (
     <div style={cardStyle}>
