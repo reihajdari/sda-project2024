@@ -152,6 +152,7 @@ function Reservation() {
               <Form.Control
                 type="text"
                 defaultValue={currentReservation?.id}
+                readOnly
                 {...register("id", { required: "ID is required" })}
               />
             </Form.Group>
@@ -160,6 +161,7 @@ function Reservation() {
               <Form.Control
                 type="text"
                 defaultValue={decodedToken.user_id}
+                readOnly
                 {...register("userId", { required: "User ID is required" })}
               />
             </Form.Group>
@@ -190,16 +192,20 @@ function Reservation() {
             <Form.Group controlId="formEmail">
               <Form.Label>Age</Form.Label>
               <Form.Control
+                min={16}
+                max={100}
                 type="number"
                 defaultValue={currentReservation?.age}
                 {...register("age", { required: "Age is required" })}
               />
             </Form.Group>
-            <Form.Group controlId="formEmail">
+            <Form.Group controlId="formTickets">
               <Form.Label>Number Of Tickets</Form.Label>
               <Form.Control
                 type="number"
                 defaultValue={currentReservation?.numberOfTickets}
+                min={1}
+                max={5}
                 {...register("numberOfTickets", {
                   required: "Number of tickets is required",
                 })}

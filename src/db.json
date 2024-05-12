@@ -1,17 +1,6 @@
 {
   "reservations": [
     {
-      "id": "6221",
-      "userId": "xVAjMBQhZQTewKfYOB0IMnPdmUw2",
-      "name": "Rei",
-      "surname": "Hajdari",
-      "email": "reihajdari03@gmail.com",
-      "age": "12",
-      "numberOfTickets": "23",
-      "theatre": "Theatre 1",
-      "movieTitle": "The Idea of You"
-    },
-    {
       "id": "40d0",
       "userId": "xVAjMBQhZQTewKfYOB0IMnPdmUw2",
       "emailToken": "admin_rei@gmail.com",
@@ -22,6 +11,41 @@
       "numberOfTickets": "2",
       "theatre": "Theatre 1",
       "movieTitle": "Kingdom of the Planet of the Apes"
+    },
+    {
+      "id": "a57d",
+      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari03@gmail.com",
+      "age": "21",
+      "numberOfTickets": "5",
+      "theatre": "Theatre 1",
+      "movieTitle": "Kingdom of the Planet of the Apes"
+    },
+    {
+      "id": "96f7",
+      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
+      "emailToken": "reihajdari00@gmail.com",
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari03@gmail.com",
+      "age": "12345",
+      "numberOfTickets": "2",
+      "theatre": "Theatre 1",
+      "movieTitle": "Kingdom of the Planet of the Apes"
+    },
+    {
+      "id": "aa8d",
+      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
+      "emailToken": "reihajdari00@gmail.com",
+      "name": "Rei",
+      "surname": "Hajdari",
+      "email": "reihajdari03@gmail.com",
+      "age": "16",
+      "numberOfTickets": "2",
+      "theatre": "Theatre 1",
+      "movieTitle": "Godzilla Minus One"
     }
   ]
 }

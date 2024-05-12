@@ -17,6 +17,7 @@ public
 firebase.json
 .github
 .build
+.db.json
 
 # Editor directories and files
 .vscode/*

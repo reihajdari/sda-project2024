@@ -187,6 +187,8 @@ function SinglePost() {
               <Form.Control
                 type="number"
                 placeholder="Enter your age"
+                min={16}
+                max={100}
                 {...register("age", { required: true })}
               />
             </Form.Group>
@@ -195,12 +197,15 @@ function SinglePost() {
               <Form.Control
                 type="number"
                 placeholder="Number of tickets"
+                max={5}
+                min={1}
                 {...register("tickets", { required: true })}
               />
             </Form.Group>
             <Form.Group controlId="formMovie">
               <Form.Label>Movie</Form.Label>
               <Form.Control
+                readOnly
                 {...register("movieTitle", { value: movie?.title })}
               />
             </Form.Group>
