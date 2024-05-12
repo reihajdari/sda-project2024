@@ -1,51 +1,16 @@
 {
   "reservations": [
     {
-      "id": "40d0",
-      "userId": "xVAjMBQhZQTewKfYOB0IMnPdmUw2",
-      "emailToken": "admin_rei@gmail.com",
+      "id": "9d76",
+      "userId": "nezL85ogtig8pEE4o2upErvQa0v2",
+      "emailToken": "rei@gmail.com",
       "name": "Rei",
       "surname": "Hajdari",
-      "email": "reihajdari03@gmail.com",
-      "age": "12",
+      "email": "rei@gmail.com",
+      "age": "22",
       "numberOfTickets": "2",
       "theatre": "Theatre 1",
-      "movieTitle": "Kingdom of the Planet of the Apes"
-    },
-    {
-      "id": "a57d",
-      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
-      "name": "Rei",
-      "surname": "Hajdari",
-      "email": "reihajdari03@gmail.com",
-      "age": "21",
-      "numberOfTickets": "5",
-      "theatre": "Theatre 1",
-      "movieTitle": "Kingdom of the Planet of the Apes"
-    },
-    {
-      "id": "96f7",
-      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
-      "emailToken": "reihajdari00@gmail.com",
-      "name": "Rei",
-      "surname": "Hajdari",
-      "email": "reihajdari03@gmail.com",
-      "age": "12345",
-      "numberOfTickets": "2",
-      "theatre": "Theatre 1",
-      "movieTitle": "Kingdom of the Planet of the Apes"
-    },
-    {
-      "id": "aa8d",
-      "userId": "1JmMAAsrCVbL0mwfgaRUBdca1TK2",
-      "emailToken": "reihajdari00@gmail.com",
-      "name": "Rei",
-      "surname": "Hajdari",
-      "email": "reihajdari03@gmail.com",
-      "age": "16",
-      "numberOfTickets": "2",
-      "theatre": "Theatre 1",
-      "movieTitle": "Godzilla Minus One"
+      "movieTitle": "Ghostbusters: Frozen Empire"
     }
   ]
 }

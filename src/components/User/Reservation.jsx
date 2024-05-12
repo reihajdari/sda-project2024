@@ -3,7 +3,7 @@ import {
   getSingleReservationUser,
   deleteReservation,
   updateReservation,
-} from "../../api/reservations,js";
+} from "../../api/reservations.js";
 import {
   Spinner,
   Alert,

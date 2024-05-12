@@ -15,7 +15,7 @@ import { GlobalContext } from "../App";
 import Footer from "../components/Home/Footer";
 import { Modal } from "antd";
 import HeaderSinglePost from "../components/SinglePost/HeaderSinglePost";
-import { reservationData } from "../api/reservations,js";
+import { reservationData } from "../api/reservations.js";
 import { getSinglePost } from "../api/movies";
 import { useForm } from "react-hook-form";
 
